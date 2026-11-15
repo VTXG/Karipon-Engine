@@ -1,3 +1,5 @@
+#ifndef KRP_CORE
+
 #include "Game/AudioLib/AudSceneMgr.hpp"
 #include "Game/AudioLib/AudBgmMgr.hpp"
 #include "Game/AudioLib/AudEffector.hpp"
@@ -458,3 +460,5 @@ bool AudSceneMgr::isPlayerResourceLoaded() {
 
     return true;
 }
+
+#endif

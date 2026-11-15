@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Karipon/Util/ByamlIter.hpp"
+#include "Karipon/Util/GlobalInstance.hpp"
 #include <Game/Util/Array.hpp>
 #include <Game/Util/JMapInfo.hpp>
 
@@ -10,7 +11,7 @@ class GameEventValue;
 class JKRMemArchive;
 
 namespace krp {
-    class SystemDataHolder {
+    class SystemDataHolder : public GlobalInstance< SystemDataHolder > {
     public:
         SystemDataHolder();
 
@@ -23,8 +24,6 @@ namespace krp {
         u8 getStoryEventProgress(const char* pName);
         krp::ByamlIter getStageParams(const char* pName, s32 scenarioNo = 0);
         krp::ByamlIter getDomeParams(s32 scenarioNo);
-
-        static SystemDataHolder* get();
 
         JKRMemArchive* mArchive;
         JMapInfo mGalaxyInfoTable;

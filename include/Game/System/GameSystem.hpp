@@ -60,7 +60,4 @@ public:
     /* 0x30 */ SystemWipeHolder* mSystemWipeHolder;
     /* 0x34 */ HomeButtonStateNotifier* mHomeButtonStateNotifier;
     /* 0x38 */ bool mIsExecuteLoadSystemArchive;
-#ifdef KRP_CORE
-    /* 0x3C */ krp::SystemDataHolder* mSystemDataHolder;
-#endif
 };

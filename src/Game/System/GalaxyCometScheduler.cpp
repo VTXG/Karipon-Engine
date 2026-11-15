@@ -292,7 +292,7 @@ void GalaxyCometTimeTable::advance() {
 
 GalaxyCometScheduler::GalaxyCometScheduler() : mTimeTables(), mEnabled(true) {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
     mTimeTables.init(systemDataHolder->mCometTable.size());
 #else
     mTimeTables.init(6);

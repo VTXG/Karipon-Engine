@@ -455,7 +455,7 @@ namespace MR {
             gameDataHolder = GameDataFunction::getCurrentGameDataHolder();
         }
 
-        krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+        krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
         krp::ByamlIter iter = systemDataHolder->getDomeParams(domeID);
         const char* unlockFlag = nullptr;
 

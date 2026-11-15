@@ -8,7 +8,7 @@
 
 s32 GalaxyNameSortTable::getGalaxySortIndex(const char* pName) {
 #ifdef KRP_CORE
-    JMapInfoIter iter = krp::SystemDataHolder::get()->getGalaxyInfo(pName);
+    JMapInfoIter iter = krp::SystemDataHolder::getInstance()->getGalaxyInfo(pName);
 
     if (!iter.isValid()) {
         return -1;

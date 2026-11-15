@@ -12,7 +12,7 @@
 
 s32 GameDataConst::getPowerStarNumToOpenGalaxy(const char* pGalaxyName) {
 #ifdef KRP_CORE
-    JMapInfoIter element = krp::SystemDataHolder::get()->getGalaxyInfo(pGalaxyName);
+    JMapInfoIter element = krp::SystemDataHolder::getInstance()->getGalaxyInfo(pGalaxyName);
 #else
     JMapInfo info;
     info.attach(&GalaxyInfoTable_bcsv_start);
@@ -76,7 +76,7 @@ bool GameDataConst::isGalaxyAppearGreenDriver(const char* pGalaxyName) {
 
 u32 GameDataConst::getIncludedGrandGalaxyId(const char* pGalaxyName) {
 #ifdef KRP_CORE
-    JMapInfoIter element = krp::SystemDataHolder::get()->getGalaxyInfo(pGalaxyName);
+    JMapInfoIter element = krp::SystemDataHolder::getInstance()->getGalaxyInfo(pGalaxyName);
 #else
     JMapInfo info;
     info.attach(&GalaxyIDBCSV);

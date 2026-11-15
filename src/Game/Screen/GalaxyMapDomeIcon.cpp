@@ -130,7 +130,7 @@ s32 GalaxyMapDomeIcon::calcDomeStatus() const {
 
 bool GalaxyMapDomeIcon::isComplete() const {
 #ifdef KRP_CORE
-    JMapInfo& mapInfo = krp::SystemDataHolder::get()->mGalaxyInfoTable;
+    JMapInfo& mapInfo = krp::SystemDataHolder::getInstance()->mGalaxyInfoTable;
 #else
     JMapInfo mapInfo = JMapInfo();
     mapInfo.attach(&GalaxyInfoTable_bcsv_start);
@@ -193,7 +193,7 @@ void GalaxyMapDomeIcon::syncStatus() {
 
 bool GalaxyMapDomeIcon::hasNewGalaxy() const {
 #ifdef KRP_CORE
-    JMapInfo mapInfo = krp::SystemDataHolder::get()->mGalaxyInfoTable;
+    JMapInfo mapInfo = krp::SystemDataHolder::getInstance()->mGalaxyInfoTable;
 #else
     JMapInfo mapInfo = JMapInfo();
     mapInfo.attach(&GalaxyInfoTable_bcsv_start);

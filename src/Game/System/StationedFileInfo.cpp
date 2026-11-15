@@ -954,13 +954,13 @@ namespace {
         },
 #ifdef KRP_CORE
         {
-            StationedFileInfo::HEAP_TYPE_GDDR,
-            StationedFileInfo::LOAD_TYPE_MOUNT,
+            MR::StationedFileInfo::HEAP_TYPE_GDDR,
+            MR::StationedFileInfo::LOAD_TYPE_MOUNT,
             "/ObjectData/ProductMapObjDataTable.arc",
         },
         {
-            StationedFileInfo::HEAP_TYPE_GDDR,
-            StationedFileInfo::LOAD_TYPE_MOUNT,
+            MR::StationedFileInfo::HEAP_TYPE_GDDR,
+            MR::StationedFileInfo::LOAD_TYPE_MOUNT,
             "/SystemData/SystemDataTable.arc",
         },
 #endif

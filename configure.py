@@ -809,6 +809,7 @@ config.libs = [
     KariponLib(
         "AudioLib",
         [
+            Object(MatchingFor(), "Karipon/AudioLib/AudDataHolder.cpp"),
             Object(MatchingFor(), "Karipon/AudioLib/AudSceneMgr.cpp"),
         ]
     ),

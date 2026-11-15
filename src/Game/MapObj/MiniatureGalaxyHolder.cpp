@@ -23,7 +23,7 @@ namespace {
 MiniatureGalaxyHolder::MiniatureGalaxyHolder()
     : LiveActor("ミニチュアギャラクシー保持"), mMiniatureGalaxyGroup(), _90(), mCometGalaxy(), mCometID(-1), _9C() {
 #ifdef KRP_CORE
-    mParamTable = krp::SystemDataHolder::get()->getDomeParams(MR::getCurrentScenarioNo());
+    mParamTable = krp::SystemDataHolder::getInstance()->getDomeParams(MR::getCurrentScenarioNo());
 #endif
     mMiniatureGalaxyGroup = new LiveActorGroup("ミニチュアギャラクシーグループ", 16);
 }

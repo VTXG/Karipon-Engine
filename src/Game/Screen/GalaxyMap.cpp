@@ -425,7 +425,7 @@ namespace {
 
 void GalaxyMap::initPaneCtrlPointing() {
 #ifdef KRP_CORE
-    JMapInfo& galaxyInfo = krp::SystemDataHolder::get()->mGalaxyInfoTable;
+    JMapInfo& galaxyInfo = krp::SystemDataHolder::getInstance()->mGalaxyInfoTable;
 #else
     JMapInfo galaxyInfo;
     galaxyInfo.attach(&GalaxyInfoTable_bcsv_start);

@@ -45,7 +45,7 @@ namespace {
 
 GameEventValueChecker::GameEventValueChecker() : mValues(), mNumValues() {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
     mNumValues = systemDataHolder->mEventValueTable.size();
     mValues = new u16[mNumValues];
 #else
@@ -73,7 +73,7 @@ u32 GameEventValueChecker::getSignature() const {
 
 s32 GameEventValueChecker::serialize(u8* pData, u32 maxBufferSize) const {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     JSUMemoryOutputStream stream(pData, maxBufferSize);
@@ -124,7 +124,7 @@ s32 GameEventValueChecker::deserialize(const u8* pData, u32 maxBufferSize) {
 
 void GameEventValueChecker::initializeData() {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
@@ -138,7 +138,7 @@ void GameEventValueChecker::initializeData() {
 
 s32 GameEventValueChecker::findIndex(const char* pName) const {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
@@ -158,7 +158,7 @@ s32 GameEventValueChecker::findIndex(const char* pName) const {
 
 s32 GameEventValueChecker::findIndexFromHashCode(u16 hash) const {
 #ifdef KRP_CORE
-    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::get();
+    krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {

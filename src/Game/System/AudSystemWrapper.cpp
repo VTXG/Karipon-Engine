@@ -14,7 +14,7 @@
 #include <JSystem/JKernel/JKRSolidHeap.hpp>
 
 #ifdef KRP_CORE
-#include "Game/Util/MemoryUtil.hpp"
+#include <Karipon/AudioLib/AudDataHolder.hpp>
 #endif
 
 namespace AudRhythmWrap {
@@ -47,7 +47,7 @@ void AudSystemWrapper::requestResourceForInitialize() {
     MR::mountAsyncArchive(AudSpeakerWrap::getResName(), mSpkHeap);
     MR::mountAsyncArchive(sJaiRemixArc, mSolidHeap);
 #ifdef KRP_CORE
-    MR::loadAsyncToMainRAM("/SystemData/StageWaveTable.byaml", nullptr, MR::getStationedHeapGDDR3(), JKRDvdRipper::ALLOC_DIRECTION_FORWARD);
+    MR::mountAsyncArchive("/SystemData/AudDataTable.arc", mSolidHeap);
 #endif
 }
 
@@ -238,4 +238,8 @@ void AudSystemWrapper::receiveResourceForInitialize() {
     mJaiMeRes = MR::receiveArchive(sJaiMeArc);
     mSpkRes = MR::receiveArchive(AudSpeakerWrap::getResName());
     mJaiRemixSeqRes = MR::receiveArchive(sJaiRemixArc);
+#ifdef KRP_CORE
+    krp::AudDataHolder::initInstance();
+    krp::AudDataHolder::getInstance()->init();
+#endif
 }

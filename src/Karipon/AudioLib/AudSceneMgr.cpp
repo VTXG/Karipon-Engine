@@ -1,4 +1,5 @@
 #include "Karipon/AudioLib/AudSceneMgr.hpp"
+#include "Karipon/AudioLib/AudDataHolder.hpp"
 #include "Karipon/Util/ByamlUtil.hpp"
 #include <Game/AudioLib/AudEffector.hpp>
 #include <Game/AudioLib/AudSystem.hpp>
@@ -13,9 +14,7 @@ namespace krp {
     AudSceneMgr::AudSceneMgr(JAUSectionHeap* pSectionHeap)
         : mSectionHeap(pSectionHeap), _4(), mStaticResource(), mStageResource(), mWaveSetStage(), mWaveSetScenario(), mPlayerMode(),
           mPrevPlayerMode(), mIsNewPlayerMode(), _1D() {
-        void* fileData = MR::receiveFile("/SystemData/StageWaveTable.byaml");
-        ByamlIter root = krp::createByamlRoot(static_cast< u8* >(fileData));
-
+        ByamlIter& root = krp::AudDataHolder::getInstance()->mStageWaveTable;
         mStaticResource = root["StaticResource"];
         mStageResource = root["StageResource"];
     }

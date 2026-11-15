@@ -120,10 +120,12 @@ void GameSystemSceneController::initializeScene() {
     if (SingletonHolder< HeapMemoryWatcher >::get()->mFileCacheHeap == nullptr || !isSameAtNextSceneAndStage()) {
         u32 fileCacheSize = 0x1040400;
 
-        krp::ByamlIter params = krp::SystemDataHolder::get()->getStageParams(mNextSceneControlInfo.mStage, mNextSceneControlInfo.mScenarioNo);
+#ifdef KRP_CORE
+        krp::ByamlIter params = krp::SystemDataHolder::getInstance()->getStageParams(mNextSceneControlInfo.mStage, mNextSceneControlInfo.mScenarioNo);
         if (params.isValid()) {
             params.tryGetValueByKey("FileCacheSize", &fileCacheSize);
         }
+#endif
 
         SingletonHolder< HeapMemoryWatcher >::get()->createFileCacheHeapOnGameHeap(fileCacheSize);
     }

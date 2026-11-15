@@ -79,9 +79,6 @@ GameSystem::GameSystem()
     : NerveExecutor("GameSystem"), mFifoBase(nullptr), mSequenceDirector(nullptr), mErrorWatcher(nullptr), mFontHolder(nullptr),
       mFrameControl(nullptr), mObjHolder(nullptr), mSceneController(nullptr), mStationedArchiveLoader(nullptr), mHomeButtonLayout(nullptr),
       mSystemWipeHolder(nullptr), mHomeButtonStateNotifier(nullptr), mIsExecuteLoadSystemArchive(false) {
-#ifdef KRP_CORE
-    mSystemDataHolder = nullptr;
-#endif
 }
 
 void GameSystem::init() {
@@ -105,7 +102,7 @@ void GameSystem::init() {
     mDimmingWatcher = new GameSystemDimmingWatcher();
 
 #ifdef KRP_CORE
-    mSystemDataHolder = new krp::SystemDataHolder();
+    krp::SystemDataHolder::initInstance();
 #endif
 
     setNerve(GET_NERVE(GameSystem, GameSystemInitializeAudio));
@@ -178,7 +175,7 @@ void GameSystem::initGX() {
 
 void GameSystem::initAfterStationedResourceLoaded() {
 #ifdef KRP_CORE
-    mSystemDataHolder->init();
+    krp::SystemDataHolder::getInstance()->init();
 #endif
     mFontHolder->createFontFromFile();
     mObjHolder->initAfterStationedResourceLoaded();

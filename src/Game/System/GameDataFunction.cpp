@@ -359,7 +359,7 @@ namespace GameDataFunction {
 #ifdef KRP_CORE
     s32 calcOpenedAstroDomeNum(const GameDataHolder* pGameDataHolder) {
         s32 astroDomeNum = 0;
-        s32 entryNum = krp::SystemDataHolder::get()->mDomeParamTable.getSize();
+        s32 entryNum = krp::SystemDataHolder::getInstance()->mDomeParamTable.getSize();
 
         for (int i = 1; i <= entryNum; i++) {
             if (MR::isOpenAstroDome(i)) {

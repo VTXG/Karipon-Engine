@@ -1,5 +1,15 @@
 #pragma once
 
+#ifdef KRP_CORE
+#include <Karipon/AudioLib/AudSceneMgr.hpp>
+
+// very quirky way to implement this
+class AudSceneMgr : public krp::AudSceneMgr {
+public:
+    AudSceneMgr(JAUSectionHeap* pSectionHeap) : krp::AudSceneMgr(pSectionHeap) {}
+};
+
+#else
 #include <revolution/types.h>
 
 class JAUSectionHeap;
@@ -58,3 +68,4 @@ public:
     /* 0x1C */ bool mIsNewPlayerMode;
     /* 0x1D */ bool _1D;
 };
+#endif

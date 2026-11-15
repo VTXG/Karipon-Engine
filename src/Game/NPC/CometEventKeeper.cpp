@@ -32,7 +32,7 @@ void CometEventKeeper::init() {
     initCometStatus();
 
 #ifdef KRP_CORE
-    krp::ByamlIter params = krp::SystemDataHolder::get()->getStageParams(MR::getCurrentStageName(), MR::getCurrentScenarioNo());
+    krp::ByamlIter params = krp::SystemDataHolder::getInstance()->getStageParams(MR::getCurrentStageName(), MR::getCurrentScenarioNo());
 #endif
 
     if (isStartEvent("Red") || isStartEvent("Black")) {

@@ -294,7 +294,7 @@ namespace GameEventFlagTable {
 
     s32 getTableSize() {
 #ifdef KRP_CORE
-        return krp::SystemDataHolder::get()->mEventFlagTable.size();
+        return krp::SystemDataHolder::getInstance()->mEventFlagTable.size();
 #else
         return ARRAY_SIZE(::sGameEventFlagStatic);
 #endif
@@ -305,7 +305,7 @@ namespace GameEventFlagTable {
             return nullptr;
         } else {
 #ifdef KRP_CORE
-            return &::krp::SystemDataHolder::get()->mEventFlagTable[index];
+            return &::krp::SystemDataHolder::getInstance()->mEventFlagTable[index];
 #else
             return &::sGameEventFlagStatic[index];
 #endif
@@ -392,7 +392,7 @@ namespace GameEventFlagTable {
 
     int getIndex(const GameEventFlag* pFlag) {
 #ifdef KRP_CORE
-        return pFlag - krp::SystemDataHolder::get()->mEventFlagTable.begin();
+        return pFlag - krp::SystemDataHolder::getInstance()->mEventFlagTable.begin();
 #else
         return pFlag - &::sGameEventFlagStatic[0];
 #endif
@@ -476,7 +476,7 @@ namespace GameEventFlagTable {
 
     s32 getGalaxyDependedFlags(const char** pFlags, int a1, const char* pName) {
 #ifdef KRP_CORE
-        JMapInfoIter iter = krp::SystemDataHolder::get()->getGalaxyInfo(pName);
+        JMapInfoIter iter = krp::SystemDataHolder::getInstance()->getGalaxyInfo(pName);
         const JMapInfo& info = *iter.mInfo;
 #else
         JMapInfo info;

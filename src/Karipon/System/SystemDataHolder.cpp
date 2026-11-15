@@ -1,15 +1,11 @@
-#ifdef KRP_CORE
-
 #include "Karipon/System/SystemDataHolder.hpp"
 #include "Karipon/Util/ByamlUtil.hpp"
 #include <Game/System/GalaxyCometScheduler.hpp>
 #include <Game/System/GameEventFlag.hpp>
 #include <Game/System/GameEventValueChecker.hpp>
-#include <Game/System/GameSystem.hpp>
 #include <Game/Util/FileUtil.hpp>
 #include <Game/Util/JMapInfo.hpp>
 #include <Game/Util/ObjUtil.hpp>
-#include <Game/Util/SingletonHolder.hpp>
 #include <Game/Util/StringUtil.hpp>
 #include <JSystem/JKernel/JKRMemArchive.hpp>
 #include <cstdio>
@@ -205,10 +201,4 @@ namespace krp {
     krp::ByamlIter SystemDataHolder::getDomeParams(s32 scenarioNo) {
         return mDomeParamTable[scenarioNo - 1];
     }
-
-    SystemDataHolder* SystemDataHolder::get() {
-        return SingletonHolder< GameSystem >::get()->mSystemDataHolder;
-    }
 }; // namespace krp
-
-#endif

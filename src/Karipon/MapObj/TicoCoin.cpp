@@ -160,7 +160,7 @@ namespace krp {
             return false;
         }
 
-        ByamlIter params = krp::SystemDataHolder::get()->getStageParams(MR::getCurrentStageName());
+        ByamlIter params = krp::SystemDataHolder::getInstance()->getStageParams(MR::getCurrentStageName());
 
         if (params.isValid()) {
             u32 ticoCoinNum = 0;

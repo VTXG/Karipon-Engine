@@ -321,7 +321,7 @@ bool GameDataHolder::isCompleteMarioAndLuigi() const {
 
 bool GameDataHolder::isPassedStoryEvent(const char* pEventName) const {
 #ifdef KRP_CORE
-    return krp::SystemDataHolder::get()->getStoryEventProgress(pEventName) <= mPlayerStatus->mStoryProgress;
+    return krp::SystemDataHolder::getInstance()->getStoryEventProgress(pEventName) <= mPlayerStatus->mStoryProgress;
 #else
     JMapInfoIter iter = mMapInfo->findElement("name", pEventName, 0);
 
@@ -333,7 +333,7 @@ bool GameDataHolder::isPassedStoryEvent(const char* pEventName) const {
 
 void GameDataHolder::followStoryEventByName(const char* pEventName) {
 #ifdef KRP_CORE
-    mPlayerStatus->mStoryProgress = krp::SystemDataHolder::get()->getStoryEventProgress(pEventName);
+    mPlayerStatus->mStoryProgress = krp::SystemDataHolder::getInstance()->getStoryEventProgress(pEventName);
 #else
     JMapInfoIter iter = mMapInfo->findElement("name", pEventName, 0);
 
