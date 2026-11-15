@@ -140,7 +140,7 @@ def patch_sel(elf_path, sel_path, out_path):
         current_offset += RSO_SYMBOL_ENTRY_SIZE
 
     if is_error:
-        raise Exception(f"[ERR] too many errors")
+        raise Exception(f"[ERR] Too many errors")
 
     with open(out_path, 'wb') as out_stream:
         out_stream.write(sel_data)

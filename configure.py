@@ -94,12 +94,6 @@ parser.add_argument(
     help="path to decomp-toolkit binary or source (optional)",
 )
 parser.add_argument(
-    "--objdiff",
-    metavar="BINARY | DIR",
-    type=Path,
-    help="path to objdiff-cli binary or source (optional)",
-)
-parser.add_argument(
     "--sjiswrap",
     metavar="EXE",
     type=Path,
@@ -153,7 +147,6 @@ version_num = VERSIONS.index(config.version)
 config.build_dir = args.build_dir
 config.orig_dir = args.orig_dir
 config.dtk_path = args.dtk
-config.objdiff_path = args.objdiff
 config.binutils_path = args.binutils
 config.compilers_path = args.compilers
 config.generate_map = args.map
@@ -162,15 +155,11 @@ config.sjiswrap_path = args.sjiswrap
 config.progress = args.progress
 if not is_windows():
     config.wrapper = args.wrapper
-# Don't build asm unless we're --non-matching
-if not config.non_matching:
-    config.asm_dir = None
 
 # Tool versions
 config.binutils_tag = "2.42-2"
 config.compilers_tag = "20251118"
 config.dtk_tag = "v1.8.3"
-config.objdiff_tag = "v3.6.1"
 config.sjiswrap_tag = "v1.2.2"
 config.wibo_tag = "1.0.3"
 
@@ -181,6 +170,7 @@ config.asflags = [
     "-mgekko",
     "--strip-local-absolute",
     "-I include",
+    f"-I {config.assets_dir}",
     f"-I build/{config.version}/include",
     f"--defsym version={version_num}",
 ]
@@ -585,14 +575,13 @@ def SDKLib_KPAD(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
             "progress_category": "sdk",
             "objects": objects,
         }
-    elif config.version == "RMGK01" or config.version == "SHIELD":
-        return {
-            "lib": lib_name,
-            "mw_version": "Wii/1.0",
-            "cflags": cflags_sdk,
-            "progress_category": "sdk",
-            "objects": objects,
-        }
+    return {
+        "lib": lib_name,
+        "mw_version": "Wii/1.0",
+        "cflags": cflags_sdk,
+        "progress_category": "sdk",
+        "objects": objects,
+    }
 
 
 def SDKLib_WENC(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
