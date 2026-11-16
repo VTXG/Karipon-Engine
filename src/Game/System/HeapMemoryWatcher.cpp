@@ -130,7 +130,7 @@ void HeapMemoryWatcher::createRootHeap() {
 
     JKRExpHeap::createRoot(1, true);
 #ifdef KRP_CORE
-    JKRHeap::sRootHeap->setName("RootHeapGDDR3");
+    JKRHeap::sRootHeap->setName("RootHeap");
 #endif
 
     arenaLo = reinterpret_cast< u32 >(OSGetMEM2ArenaLo());
@@ -146,7 +146,7 @@ void HeapMemoryWatcher::createRootHeap() {
 
     HeapMemoryWatcher::sRootHeapGDDR3 = pHeap;
 #ifdef KRP_CORE
-    HeapMemoryWatcher::sRootHeapGDDR3->setName("RootHeapGDDR3");
+    HeapMemoryWatcher::sRootHeapGDDR3->setName("RootHeapGDDR");
 #endif
 }
 
@@ -191,16 +191,16 @@ HeapMemoryWatcher::HeapMemoryWatcher()
     createHeaps();
 }
 
-void HeapMemoryWatcher::memoryErrorCallback(void* pHeap, u32 size, int alignment) {
+void HeapMemoryWatcher::memoryErrorCallback(void* pHeapAddr, u32 size, int alignment) {
 #ifdef KRP_CORE
-    const JKRHeap* jkrHeap = static_cast< const JKRHeap* >(pHeap);
+    JKRHeap* heap = static_cast< JKRHeap* >(pHeapAddr);
     const char* heapName;
 
-    if (jkrHeap != nullptr && jkrHeap->mName != nullptr) {
-        heapName = jkrHeap->mName;
+    if (heap != nullptr && heap->mName != nullptr) {
+        heapName = heap->mName;
     }
     else {
-        heapName = "unknown";
+        heapName = "Unnamed";
     }
 
     OSPanic(__FILE__, __LINE__, "Failed to allocate memory in heap '%s' (size=%d, align=%d)", heapName, size, alignment);

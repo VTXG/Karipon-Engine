@@ -36,7 +36,7 @@ namespace {
     namespace DiagnosticsPage {
         static OSTick sLastTick;
 
-        static void printHeapInfo(krp::SystemDebugLayout::PrintContext& rContext, JKRHeap* pHeap) {
+        static void printHeapInfo(krp::SystemDebugLayout::PrintContext& rContext, JKRHeap* pHeap, s32 level) {
             if (pHeap == nullptr) {
                 return;
             }
@@ -44,7 +44,32 @@ namespace {
             u32 max = pHeap->mSize;
             u32 used = max - pHeap->getFreeSize();
             f32 usedPercent = static_cast< f32 >(used) / static_cast< f32 >(max) * 100.0f;
-            rContext.printTextF(false, L"%s : %.02f%% usage, 0x%08X/0x%08X bytes used\n", pHeap->mName, usedPercent, used, max);
+
+            char padding[32];
+            if (level >= sizeof(padding)) {
+                level = sizeof(padding) - 1;
+            }
+
+            for (s32 i = 0; i < level; i++) {
+                padding[i] = ' ';
+            }
+
+            padding[level] = '\0';
+
+            const char* heapName = pHeap->mName;
+
+            if (heapName == nullptr) {
+                heapName = "Unnamed";
+            }
+
+            rContext.printTextF(false, L"%s%s : %.02f%% usage, 0x%08X/0x%08X bytes used\n", padding, heapName, usedPercent, used, max);
+
+            const JSUTree< JKRHeap >& tree = pHeap->mChildTree;
+            if (tree.getNumChildren() != 0) {
+                for (JSUTreeIterator< JKRHeap > iterator(tree.getFirstChild()); iterator != tree.getEndChild(); ++iterator) {
+                    printHeapInfo(rContext, iterator.getObject(), level + 1);
+                }
+            }
         }
 
         static void update(krp::SystemDebugLayout::PrintContext& rContext) {
@@ -64,20 +89,7 @@ namespace {
 
             NameObjHolder* pNameObjHolder = SingletonHolder< GameSystem >::get()->mSceneController->mObjHolder;
             rContext.printTextF(false, L"Object Info : %d/%d objects\n", pNameObjHolder->getObjArraySize(), pNameObjHolder->getObjArrayCapacity());
-
-            HeapMemoryWatcher* pWatcher = SingletonHolder< HeapMemoryWatcher >::get();
-            printHeapInfo(rContext, JKRHeap::sSystemHeap);
-            printHeapInfo(rContext, pWatcher->mStationedHeapNapa);
-            printHeapInfo(rContext, pWatcher->mStationedHeapGDDR);
-            printHeapInfo(rContext, pWatcher->mGameHeapNapa);
-            printHeapInfo(rContext, pWatcher->mGameHeapGDDR);
-            printHeapInfo(rContext, pWatcher->mFileCacheHeap);
-            printHeapInfo(rContext, pWatcher->mSceneHeapNapa);
-            printHeapInfo(rContext, pWatcher->mSceneHeapGDDR);
-            printHeapInfo(rContext, pWatcher->mWPadHeap);
-            printHeapInfo(rContext, pWatcher->mHomeButtonLayoutHeap);
-            printHeapInfo(rContext, pWatcher->mAudSystemHeap);
-            printHeapInfo(rContext, getOnlineManager()->mOnlineHeap);
+            printHeapInfo(rContext, JKRHeap::sRootHeap, 0);
         }
     } // namespace DiagnosticsPage
 

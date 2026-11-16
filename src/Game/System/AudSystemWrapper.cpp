@@ -37,6 +37,9 @@ AudSystemWrapper::AudSystemWrapper(JKRSolidHeap* pSolidHeap, JKRHeap* pHeap) {
     self->_28 = false;
     self->mDisableReset = false;
     mSpkHeap = JKRExpHeap::create(AudSpeakerWrap::getRequiredHeapSize(), pSolidHeap, false);
+#ifdef KRP_CORE
+    mSpkHeap->setName("AudSpeakerHeap");
+#endif
 }
 
 void AudSystemWrapper::requestResourceForInitialize() {

@@ -503,6 +503,9 @@ static JAUSectionHeap* JAUNewSectionHeap(JKRSolidHeap* heap, bool param_1) NO_IN
 JAUSectionHeap* JAUNewSectionHeap(bool param_0) {
     s32 freeSize = JASDram->getFreeSize();
     JKRSolidHeap* sectionHeap = JKRCreateSolidHeap(freeSize, JASDram, true);
+#ifdef KRP_CORE
+    sectionHeap->setName("AudSectionHeap");
+#endif
     return JAUNewSectionHeap(sectionHeap, param_0);
 }
 
