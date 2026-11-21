@@ -1016,7 +1016,8 @@ def generate_build_ninja(
             else:
                 sys.exit(f"Unknown source file type {obj.src_path}")
         else:
-            sys.exit(f"Missing source file {obj.src_path}")
+            print(f"Missing source file {obj.src_path}")
+            return
 
         if built_obj_path is not None:
             # Use the source-built object

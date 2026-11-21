@@ -22,11 +22,11 @@ public:
 
 #ifdef KRP_CORE
     int getObjArraySize() const {
-        return mObjArray1.size();
+        return mObjArray.size();
     }
 
     int getObjArrayCapacity() const {
-        return mObjArray1.capacity();
+        return mObjArray.capacity();
     }
 #endif
 

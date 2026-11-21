@@ -74,7 +74,7 @@ namespace krp {
     }
 
     void PostFog::draw() const {
-        if (!isSomething()) {
+        if (!isVisible()) {
             return;
         }
 
@@ -193,7 +193,7 @@ namespace krp {
         GXSetIndTexCoordScale(GX_INDTEXSTAGE0, GX_ITS_1, GX_ITS_1);
 
         GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K0_A);
-        u8 v6 = mA * get_10();
+        u8 v6 = mA * getFadeIntensity();
         GXSetTevKColor(GX_KCOLOR0, Color8(v6, v6, v6, v6));
 
         if (a5) {
