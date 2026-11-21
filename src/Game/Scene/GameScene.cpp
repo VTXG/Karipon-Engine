@@ -40,20 +40,7 @@
 #include "Game/Util/SystemUtil.hpp"
 #include <JSystem/J3DGraphBase/J3DSys.hpp>
 
-#ifdef KRP_CORE
-#include "Game/System/GameSystem.hpp"
-#include "Game/System/GameSystemObjHolder.hpp"
-#include "Game/Util/SingletonHolder.hpp"
-#include <Karipon/System/GameOnlineManager.hpp>
-#endif
-
 namespace {
-#ifdef KRP_CORE
-    GameOnlineManager* getGameOnlineManager() {
-        return SingletonHolder< GameSystem >::get()->mObjHolder->mOnlineManager;
-    }
-#endif
-
     CometRetryButton* getCometRetryButton() {
         return MR::getSceneObj< CometRetryButton >(SceneObj_CometRetryButton);
     }
@@ -83,9 +70,6 @@ GameScene::~GameScene() {
     MR::destroySceneMessage();
     NPCFunction::deleteNPCData();
     MR::onStarPointerSceneOut();
-#ifdef KRP_CORE
-    getGameOnlineManager()->destroyActors();
-#endif
 }
 
 void GameScene::init() {
@@ -159,9 +143,6 @@ void GameScene::init() {
         MR::initEventSystemAfterPlacement();
         MR::endInitLiveActorSystemInfo();
         MR::setInitializeStateAfterPlacement();
-#ifdef KRP_CORE
-        getGameOnlineManager()->initActors();
-#endif
         MR::callMethodAllSceneNameObj(&NameObj::initAfterPlacement);
         SleepControlFunc::initSyncSleepController();
 

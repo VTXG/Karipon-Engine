@@ -61,7 +61,8 @@ void MR::requestChangeSceneAfterGameOver() {
 }
 
 void MR::requestChangeSceneAfterBoot() {
-    requestChangeSceneTitle();
+    // requestChangeSceneTitle();
+    requestChangeStageInGameWithSyncGameData("HoneyBeeKingdomGalaxy", 1);
 }
 
 void MR::requestChangeStageGoBackAstroDome() {

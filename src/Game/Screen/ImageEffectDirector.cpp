@@ -13,6 +13,10 @@
 #include "Game/Screen/ImageEffectState.hpp"
 #include "Game/Util.hpp"
 
+#ifdef KRP_CORE
+#include <Karipon/AreaObj/PostFogArea.hpp>
+#endif
+
 namespace {
     static const s32 sIntensityCountMax = 60;
     static const f32 sDOFIntensity = 1.0f;
@@ -23,6 +27,9 @@ ImageEffectDirector::ImageEffectDirector(const char* pName)
       mStateNull(new ImageEffectStateImpl::StateNull(this)), mStateBloomNormal(new ImageEffectStateImpl::StateBloomNormal(this)),
       mStateBloomSimple(new ImageEffectStateImpl::StateBloomSimple(this)), mStateScreenBlur(new ImageEffectStateImpl::StateScreenBlur(this)),
       mStateDepthOfField(new ImageEffectStateImpl::StateDepthOfField(this)), mState(mStateNull), mCurrentEffect() {
+#ifdef KRP_CORE
+    mStatePostFog = new krp::StatePostFog(this);
+#endif
     MR::connectToSceneImageEffectMovement(this);
 }
 
@@ -195,6 +202,13 @@ void ImageEffectDirector::setDepthOfFieldParams(ImageEffectArea* pArea) {
     mStateDepthOfField->setBlurMinDist(pDepthOfFieldArea->getBlurMinDist());
 }
 
+#ifdef KRP_CORE
+void ImageEffectDirector::setPostFogParams(ImageEffectArea* pArea) {
+    krp::PostFogArea* postFogArea = static_cast< krp::PostFogArea* >(pArea);
+    mStatePostFog->setProperties(postFogArea);
+}
+#endif
+
 void ImageEffectDirector::initPlayerSyncIntensity(ImageEffectArea* pArea, ImageEffectState* pState) {
     if (mState != pState) {
         if (pArea->isSyncWithPlayer()) {
@@ -275,6 +289,12 @@ void ImageEffectDirector::updateAuto() {
         setDepthOfFieldParams(pEffectArea);
         setState(mStateDepthOfField);
         break;
+#ifdef KRP_CORE
+    case ImageEffectArea::IMAGE_EFFECT_TYPE_POST_FOG:
+        setPostFogParams(pEffectArea);
+        setState(mStatePostFog);
+        break;
+#endif
     default:
         setState(mStateNull);
         break;

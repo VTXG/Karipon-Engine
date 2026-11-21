@@ -18,8 +18,10 @@
 #include "Game/Util/StringUtil.hpp"
 
 #ifdef KRP_CORE
+#include <Karipon/AreaObj/PostFogArea.hpp>
 #include <Karipon/Map/ProductMapCreator.hpp>
 #include <Karipon/MapObj/TicoCoin.hpp>
+#include <Karipon/Tools/GhostPlayerRecordHelper.hpp>
 #endif
 
 namespace {
@@ -5966,10 +5968,20 @@ namespace {
         },
 #ifdef KRP_CORE
         {
+            "PostFogCube",
+            createBaseOriginCube< krp::PostFogArea >,
+            "PostFog",
+        },
+        {
             "TicoCoin",
             createNameObj< krp::TicoCoin >,
             "TicoCoin",
-        }
+        },
+        {
+            "GhostPlayerRecordHelper",
+            createNameObj< gst::GhostPlayerRecordHelper >,
+            nullptr,
+        },
 #endif
     };
     const NameObjFactory::Name2Archive cName2ArchiveNamesTable[] = {

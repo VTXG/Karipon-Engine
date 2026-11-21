@@ -131,6 +131,7 @@ enum SceneObj {
 
 #ifdef KRP_CORE
     SceneObj_ProductMapCreator = 0x7B,
+    SceneObj_PostFog = 0x7C,
 #endif
 
     SceneObj_NumMax,

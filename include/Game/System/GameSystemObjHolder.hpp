@@ -18,11 +18,9 @@ class StarPointerDirector;
 class WPadHolder;
 
 #ifdef KRP_CORE
-class GameOnlineManager;
-class NetworkSystemWrapper;
-
 namespace krp {
-    class SystemDebugLayout;
+    class DebugPrint;
+    class OnlineManager;
 };
 #endif
 
@@ -76,8 +74,7 @@ public:
     /* 0x34 */ JMath::TRandom_fast_ mRandom;
     /* 0x38 */ u32 mLanguage;
 #ifdef KRP_CORE
-    /* 0x3C */ NetworkSystemWrapper* mNetworkSystem;
-    /* 0x40 */ GameOnlineManager* mOnlineManager;
-    /* 0x44 */ krp::SystemDebugLayout* mDebugLayout;
+    /* 0x3C */ krp::OnlineManager* mOnlineManager;
+    /* 0x40 */ krp::DebugPrint* mDebugPrint;
 #endif
 };

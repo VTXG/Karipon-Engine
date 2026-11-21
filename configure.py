@@ -807,6 +807,12 @@ config.libs = [
         ],
     ),
     KariponLib(
+        "AreaObj",
+        [
+            Object(MatchingFor(), "Karipon/AreaObj/PostFogArea.cpp"),
+        ]
+    ),
+    KariponLib(
         "AudioLib",
         [
             Object(MatchingFor(), "Karipon/AudioLib/AudDataHolder.cpp"),
@@ -828,29 +834,33 @@ config.libs = [
     KariponLib(
         "Online",
         [
-            # Object(MatchingFor(), "Karipon/Online/GameOnlineManager.cpp"),
-        ]
-    ),
-    KariponLib(
-        "Player",
-        [
-            Object(MatchingFor(), "Karipon/Player/OnlinePlayer.cpp"),
+            Object(MatchingFor(), "Karipon/Online/OnlineManager.cpp"),
+            Object(MatchingFor(), "Karipon/Online/OnlinePacket.cpp"),
+            Object(MatchingFor(), "Karipon/Online/OnlinePlayer.cpp"),
         ]
     ),
     KariponLib(
         "Screen",
         [
             Object(MatchingFor(), "Karipon/Screen/PostFog.cpp"),
-            Object(MatchingFor(), "Karipon/Screen/SystemDebugLayout.cpp"),
         ]
     ),
     KariponLib(
         "System",
         [
-            Object(MatchingFor(), "Karipon/System/GameOnlineManager.cpp"),
-            Object(MatchingFor(), "Karipon/System/GameOnlinePacket.cpp"),
-            Object(MatchingFor(), "Karipon/System/NetworkSystemWrapper.cpp"),
+            Object(MatchingFor(), "Karipon/System/NetworkFunction.cpp"),
             Object(MatchingFor(), "Karipon/System/SystemDataHolder.cpp"),
+        ]
+    ),
+    KariponLib(
+        "Tools",
+        [
+            Object(MatchingFor(), "Karipon/Tools/DebugPrint.cpp"),
+            Object(MatchingFor(), "Karipon/Tools/GhostPacketSyncData.cpp"),
+            Object(MatchingFor(), "Karipon/Tools/GhostPlayerRecordHelper.cpp"),
+            Object(MatchingFor(), "Karipon/Tools/GstRecordHelper.cpp"),
+            Object(MatchingFor(), "Karipon/Tools/GstRecordSystem.cpp"),
+            Object(MatchingFor(), "Karipon/Tools/KeyboardFunction.cpp"),
         ]
     ),
     KariponLib(

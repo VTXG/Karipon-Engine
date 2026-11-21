@@ -26,18 +26,16 @@
 #include <revolution/vi.h>
 
 #ifdef KRP_CORE
-#include <Karipon/Screen/SystemDebugLayout.hpp>
-#include <Karipon/System/GameOnlineManager.hpp>
-#include <Karipon/System/NetworkSystemWrapper.hpp>
+#include <Karipon/Online/OnlineManager.hpp>
+#include <Karipon/Tools/DebugPrint.hpp>
 #endif
 
 GameSystemObjHolder::GameSystemObjHolder()
     : mObjHolder(), mParticleResHolder(), mRenderModeObj(), mCaptureScreenDirector(), mScreenPreserver(), mAudioSystem(), mWPadHolder(),
       mFunctionAsyncExecutor(), mMessageHolder(), mStarPointerDirector(), mRandom(0), mLanguage(MR::getDecidedLanguageFromIPL()) {
 #ifdef KRP_CORE
-    mNetworkSystem = nullptr;
     mOnlineManager = nullptr;
-    mDebugLayout = nullptr;
+    mDebugPrint = nullptr;
 #endif
 
     initDvd();
@@ -82,7 +80,9 @@ void GameSystemObjHolder::init() {
     initFunctionAsyncExecutor();
     initGameController();
     initDisplay();
+#ifdef KRP_CORE
     initNetwork();
+#endif
 }
 
 void GameSystemObjHolder::createAudioSystem() {
@@ -96,7 +96,9 @@ void GameSystemObjHolder::update() {
     mWPadHolder->update();
     mFunctionAsyncExecutor->update();
     mStarPointerDirector->update();
+#ifdef KRP_CORE
     mOnlineManager->update();
+#endif
 }
 
 void GameSystemObjHolder::updateAudioSystem() {
@@ -118,7 +120,7 @@ void GameSystemObjHolder::drawBeforeEndRender() {
 }
 
 void GameSystemObjHolder::drawAfterHomeMenu() {
-    mDebugLayout->draw();
+    mDebugPrint->draw();
 }
 
 void GameSystemObjHolder::captureIfAllowForScreenPreserver() {
@@ -195,7 +197,7 @@ void GameSystemObjHolder::initDisplay() {
     mCaptureScreenDirector = new CaptureScreenDirector();
     mScreenPreserver = new ScreenPreserver();
 #ifdef KRP_CORE
-    mDebugLayout = new krp::SystemDebugLayout();
+    mDebugPrint = new krp::DebugPrint();
 #endif
 
     VISetTrapFilter(VI_TRUE);
@@ -204,7 +206,6 @@ void GameSystemObjHolder::initDisplay() {
 
 #ifdef KRP_CORE
 void GameSystemObjHolder::initNetwork() {
-    mNetworkSystem = new NetworkSystemWrapper();
-    mOnlineManager = new GameOnlineManager();
+    mOnlineManager = new krp::OnlineManager();
 }
 #endif

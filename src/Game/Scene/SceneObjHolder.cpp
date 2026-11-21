@@ -121,6 +121,7 @@
 
 #ifdef KRP_CORE
 #include <Karipon/Map/ProductMapCreator.hpp>
+#include <Karipon/Screen/PostFog.hpp>
 #endif
 
 SceneObjHolder::SceneObjHolder() {
@@ -393,6 +394,8 @@ NameObj* SceneObjHolder::newEachObj(int id) {
 #ifdef KRP_CORE
     case SceneObj_ProductMapCreator:
         return new krp::ProductMapCreator();
+    case SceneObj_PostFog:
+        return new krp::PostFog("PostFog");
 #endif
     default:
         return nullptr;

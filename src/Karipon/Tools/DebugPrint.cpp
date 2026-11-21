@@ -1,11 +1,10 @@
-#include "Karipon/Screen/SystemDebugLayout.hpp"
-#include "Karipon/System/GameOnlineManager.hpp"
+#include "Karipon/Tools/DebugPrint.hpp"
+#include "Karipon/Tools/KeyboardFunction.hpp"
 #include <Game/NameObj/NameObjHolder.hpp>
 #include <Game/System/FileLoader.hpp>
 #include <Game/System/GameSystem.hpp>
 #include <Game/System/GameSystemObjHolder.hpp>
 #include <Game/System/GameSystemSceneController.hpp>
-#include <Game/System/HeapMemoryWatcher.hpp>
 #include <Game/System/WPad.hpp>
 #include <Game/System/WPadButton.hpp>
 #include <Game/System/WPadHolder.hpp>
@@ -22,21 +21,12 @@
 extern "C" int vswprintf(wchar_t* s, size_t n, const wchar_t* format, va_list arg);
 
 namespace {
-    typedef void (*PageUpdateFunc)(krp::SystemDebugLayout::PrintContext& rContext);
-
-    struct PageUpdateInfo {
-        const char* mName;
-        const PageUpdateFunc mFunc;
-    };
-
-    static GameOnlineManager* getOnlineManager() {
-        return SingletonHolder< GameSystem >::get()->mObjHolder->mOnlineManager;
-    }
+    typedef void (*PageUpdateFunc)(krp::DebugPrint::Context& rContext);
 
     namespace DiagnosticsPage {
         static OSTick sLastTick;
 
-        static void printHeapInfo(krp::SystemDebugLayout::PrintContext& rContext, JKRHeap* pHeap, s32 level) {
+        static void printHeapInfo(krp::DebugPrint::Context& rContext, JKRHeap* pHeap, s32 level) {
             if (pHeap == nullptr) {
                 return;
             }
@@ -50,8 +40,9 @@ namespace {
                 level = sizeof(padding) - 1;
             }
 
-            for (s32 i = 0; i < level; i++) {
+            for (s32 i = 0; i < level && i + 1 < sizeof(padding); i += 2) {
                 padding[i] = ' ';
+                padding[i + 1] = ' ';
             }
 
             padding[level] = '\0';
@@ -72,7 +63,7 @@ namespace {
             }
         }
 
-        static void update(krp::SystemDebugLayout::PrintContext& rContext) {
+        static void update(krp::DebugPrint::Context& rContext) {
             OSTick tick = OSGetTick();
             OSTick span = tick - sLastTick;
             sLastTick = tick;
@@ -94,40 +85,7 @@ namespace {
     } // namespace DiagnosticsPage
 
     namespace OnlinePage {
-        static void update(krp::SystemDebugLayout::PrintContext& rContext) {
-            GameOnlineManager* pOnlineManager = getOnlineManager();
-
-            if (!pOnlineManager->isConnected()) {
-                return;
-            }
-
-            rContext.printTextF(false, L"Room State : %d\n", pOnlineManager->mRoomState);
-
-            if (pOnlineManager->mRoomState == GameOnlineManager::ROOM_STATE_CONNECTED) {
-                rContext.printText(false, L"Players:\n");
-                for (GameOnlineClient* pClient = pOnlineManager->mClients.begin(); pClient != pOnlineManager->mClients.end(); pClient++) {
-                    rContext.printTextF(false, L" [%d] Port: %d Global ID: %d Stage: %s Scenario: %d\n", pClient - pOnlineManager->mClients.mArr,
-                                        pClient->mAddress.mPort, pClient->mGlobalID, pClient->mStageName, pClient->mScenarioNo);
-                }
-            } else {
-                if (rContext.printText(true, L"[Create]\n")) {
-                    pOnlineManager->requestRoomMake("Test");
-                }
-
-                if (rContext.printText(true, L"[Join]\n")) {
-                    pOnlineManager->requestRoomJoin("Test");
-                }
-            }
-
-            rContext.printTextF(false, L"Queued Packets (%d):\n", pOnlineManager->mSyncPacketQueue.mSize);
-
-            for (u32 i = 0; i < pOnlineManager->mSyncPacketQueue.mSize; i++) {
-                GameOnlinePacket* pPacket = &pOnlineManager->mSyncPacketQueue.mPackets[i];
-                rContext.printTextF(false, L" [%d] : ID %d, Type %d, Size %d, Reply %d, %d, %d, %d, %d\n", i, pPacket->mHeader.mPacketID,
-                                    pPacket->mHeader.mType, pPacket->mSize, pPacket->mIsReply[0], pPacket->mIsReply[1], pPacket->mIsReply[2],
-                                    pPacket->mIsReply[3], pPacket->mIsReply[4]);
-            }
-        }
+        static void update(krp::DebugPrint::Context& rContext) {}
     } // namespace OnlinePage
 
     static const f32 cFontSizeWidth = 10.0f;
@@ -135,9 +93,14 @@ namespace {
     static const f32 cFontLineSpace = 2.0f;
     static const f32 cFontCharSpace = 0.0f;
 
+    struct PageUpdateInfo {
+        const char* mName;
+        const PageUpdateFunc mFunc;
+    };
+
     static const PageUpdateInfo cPageUpdateFunc[] = {
-        {"Diagnostics", ::DiagnosticsPage::update},
-        {"Online", ::OnlinePage::update},
+        {"Diagnostics", DiagnosticsPage::update},
+        {"Online", OnlinePage::update},
     };
 
     static s32 wrap(s32 num, s32 min, s32 max) {
@@ -149,10 +112,14 @@ namespace {
 
         return num;
     }
-} // namespace
+}; // namespace
+
+namespace MR {
+    bool testCorePadTrigger2(s32 channel);
+};
 
 namespace krp {
-    SystemDebugLayout::PrintContext::PrintContext(SystemDebugLayout* pLayout) : mLayout(pLayout), mWriter(), mDrawRect() {
+    DebugPrint::Context::Context(DebugPrint* pLayout) : mLayout(pLayout), mWriter(), mDrawRect() {
         nw4r::ut::Font* pFont = MR::getFontOnCurrentLanguage();
 
         mWriter.SetFont(*pFont);
@@ -168,7 +135,7 @@ namespace krp {
         mWriter.SetCursor(mDrawRect.left, mDrawRect.top);
     }
 
-    void SystemDebugLayout::PrintContext::prepareDraw(u32 color) {
+    void DebugPrint::Context::prepareDraw(u32 color) {
         Mtx mtx;
         PSMTXIdentity(mtx);
 
@@ -191,7 +158,7 @@ namespace krp {
         GXSetAlphaCompare(GX_ALWAYS, 0, GX_AOP_AND, GX_ALWAYS, 0);
     }
 
-    bool SystemDebugLayout::PrintContext::printText(bool isSelectable, const wchar_t* pText) {
+    bool DebugPrint::Context::printText(bool isSelectable, const wchar_t* pText) {
         if (pText == nullptr) {
             return false;
         }
@@ -215,9 +182,7 @@ namespace krp {
         if (isSelectable) {
             if (mLayout->mSelectIndex == mLayout->mSelectCurrentIndex) {
                 prepareDraw(0x00FFDDFF);
-
-                WPadButton* padButton = MR::getWPad(0)->mButton;
-                isSelected = padButton->testButton1() && padButton->testTriggerA();
+                isSelected = krp::KeyboardFunction::isKeyPressed(krp::KBD_KEY_ENTER);
             } else {
                 prepareDraw(0xFFFFFFFF);
             }
@@ -231,7 +196,7 @@ namespace krp {
         return isSelected;
     }
 
-    bool SystemDebugLayout::PrintContext::printTextF(bool isSelectable, const wchar_t* pText, ...) {
+    bool DebugPrint::Context::printTextF(bool isSelectable, const wchar_t* pText, ...) {
         va_list list;
         wchar_t text[0x200];
 
@@ -242,18 +207,19 @@ namespace krp {
         return printText(isSelectable, text);
     }
 
-    void SystemDebugLayout::PrintContext::printFillBox(const TVec2f& tl, const TVec2f& br, u32 color) {
+    void DebugPrint::Context::printFillBox(const TVec2f& tl, const TVec2f& br, u32 color) {
         prepareDraw(0xFFFFFFFF);
         TDDraw::setup(0, 0, 2);
         TDDraw::drawFillBox(tl, br, color);
     }
 
-    SystemDebugLayout::SystemDebugLayout() : mPageIndex(), mSelectIndex(), mSelectCurrentIndex(), mIsVisible() {}
+    DebugPrint::DebugPrint() : mPageIndex(), mSelectIndex(), mSelectCurrentIndex(), mIsVisible() {
+        krp::KeyboardFunction::init();
+    }
 
-    void SystemDebugLayout::draw() {
-        WPadButton* padButton = MR::getWPad(WPAD_CHAN0)->mButton;
-
-        if (padButton->testTrigger2()) {
+    void DebugPrint::draw() {
+        if (MR::testCorePadTrigger2(WPAD_CHAN0)) {
+            krp::KeyboardFunction::update(); // flush existing inputs
             mIsVisible = !mIsVisible;
         }
 
@@ -261,30 +227,35 @@ namespace krp {
             return;
         }
 
+        if (KeyboardFunction::getState() != krp::KeyboardState_Initialized) {
+            Context ctx(this);
+            ctx.printText(false, L"Keyboard not initialized");
+            return;
+        }
+
+        krp::KeyboardFunction::update();
         mSelectCurrentIndex = 0;
 
-        PrintContext ctx(this);
+        Context ctx(this);
         ctx.printTextF(false, L"----- %s [%d/%d] -----\n", ::cPageUpdateFunc[mPageIndex].mName, mPageIndex + 1, ARRAY_SIZE(::cPageUpdateFunc));
         ::cPageUpdateFunc[mPageIndex].mFunc(ctx);
 
-        if (padButton->testButton1()) {
-            if (padButton->testTriggerUp()) {
-                mSelectIndex = wrap(mSelectIndex - 1, 0, mSelectCurrentIndex);
-            }
+        if (krp::KeyboardFunction::isKeyPressed(krp::KBD_KEY_W)) {
+            mSelectIndex = wrap(mSelectIndex - 1, 0, mSelectCurrentIndex);
+        }
 
-            if (padButton->testTriggerDown()) {
-                mSelectIndex = wrap(mSelectIndex + 1, 0, mSelectCurrentIndex);
-            }
+        if (krp::KeyboardFunction::isKeyPressed(krp::KBD_KEY_S)) {
+            mSelectIndex = wrap(mSelectIndex + 1, 0, mSelectCurrentIndex);
+        }
 
-            if (padButton->testTriggerLeft()) {
-                mPageIndex = wrap(mPageIndex - 1, 0, ARRAY_SIZE(::cPageUpdateFunc));
-                mSelectIndex = 0;
-            }
+        if (krp::KeyboardFunction::isKeyPressed(krp::KBD_KEY_A)) {
+            mPageIndex = wrap(mPageIndex - 1, 0, ARRAY_SIZE(::cPageUpdateFunc));
+            mSelectIndex = 0;
+        }
 
-            if (padButton->testTriggerRight()) {
-                mPageIndex = wrap(mPageIndex + 1, 0, ARRAY_SIZE(::cPageUpdateFunc));
-                mSelectIndex = 0;
-            }
+        if (krp::KeyboardFunction::isKeyPressed(krp::KBD_KEY_D)) {
+            mPageIndex = wrap(mPageIndex + 1, 0, ARRAY_SIZE(::cPageUpdateFunc));
+            mSelectIndex = 0;
         }
     }
 } // namespace krp

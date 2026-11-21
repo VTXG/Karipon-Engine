@@ -5,7 +5,7 @@
 #include <revolution/types.h>
 
 namespace krp {
-    static void copyNetworkString(char* pBuff, const char* pStr, u32 size);
+    void copyNetworkString(char* pBuff, const char* pStr, u32 size);
 
     enum OnlinePacketType {
         OnlinePacketType_Ping,
@@ -27,27 +27,39 @@ namespace krp {
             copyNetworkString(mData, pStr, sizeof(mData));
         }
 
-        char mData[Size];
+        void reset() {
+            mData[0] = '\0';
+        }
+
+        /* 0x0 */ char mData[Size];
     };
 
-    struct OnlinePacket {
+    struct OnlinePacketHeader {
         /* 0x00 */ u32 mHash;
         /* 0x04 */ u32 mType;
         /* 0x08 */ OSTime mTimestamp;
         /* 0x10 */ u8 mPlayerID;
-        /* 0x11 */ u8 mReserved[3];
     };
 
-    struct OnlinePacketPlayerData : OnlinePacket {
-        /* 0x14 */ TVec3f mPosition;
-        /* 0x18 */ TVec3f mRotation;
-        /* 0x1C */ TVec3f mScale;
+    class OnlinePacket {
+    public:
+        static const int PACKET_HEADER_SIZE = sizeof(OnlinePacketHeader);
+        static const int PACKET_BUFFER_SIZE = 0x100;
 
-        union {
-            /* 0x20 */ u32 mAnimNameHash;
-            /* 0x20 */ OnlineString< 32 > mAnimName;
-        };
+        OnlinePacket();
 
-        /* 0x40 */ 
+        void reset();
+        void read(void* pBuffer, u32 size);
+        void write(const void* pBuffer, u32 size);
+        void seek(u32 position) {
+            mPosition = position;
+        }
+
+    private:
+        u8 mData[PACKET_BUFFER_SIZE] ATTRIBUTE_ALIGN(32);
+
+        u32 mPosition;
+        u32 mSize;
+        bool mIsError;
     };
 }; // namespace krp
