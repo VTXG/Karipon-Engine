@@ -39,8 +39,8 @@ public:
 #endif
 
     /* 0x00 */ JMapIdInfo* mPlayerRestartIdInfo;
-    /* 0x04 */ bool _4;
-    /* 0x08 */ u32 _8;
+    /* 0x04 */ bool mHasRetryGalaxySequence;
+    /* 0x08 */ u32 mStageClearStatus;
     /* 0x0C */ s16 mPowerStarId;
     /* 0x0E */ char mStageName[48];
     /* 0x40 */ int mStarPieceNum;

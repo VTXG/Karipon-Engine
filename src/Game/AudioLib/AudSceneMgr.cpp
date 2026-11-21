@@ -196,7 +196,8 @@ namespace {
 };  // namespace
 
 AudSceneMgr::AudSceneMgr(JAUSectionHeap* pSectionHeap)
-    : _4(), mSeWaveSetId(), mSeScenarioWaveSetId(-1), mBgmWaveSetId(), mPlayerMode(), mPrevPlayerMode(), mIsNewPlayerMode(), _1D() {
+    : mStageBgmMode(), mSeWaveSetId(), mSeScenarioWaveSetId(-1), mBgmWaveSetId(), mPlayerMode(), mPrevPlayerMode(),
+      mIsNewPlayerMode(), mIsCubeBgmChangeInvalid() {
     mSectionHeap = pSectionHeap;
 }
 
@@ -361,7 +362,7 @@ bool AudSceneMgr::isLoadDoneScenarioResource() {
 }
 
 void AudSceneMgr::startScene() {
-    _4 = 0;
+    mStageBgmMode = 0;
     AudWrap::getSystem()->_82A = false;
     AudWrap::getSystem()->_82B = false;
     AudWrap::getSystem()->_82C = false;
@@ -371,7 +372,7 @@ void AudSceneMgr::startScene() {
         effector->initParams();
     }
 
-    _1D = false;
+    mIsCubeBgmChangeInvalid = false;
     SpkSystem::reconnect(-1);
 }
 

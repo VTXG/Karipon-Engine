@@ -12,8 +12,8 @@
 
 namespace krp {
     AudSceneMgr::AudSceneMgr(JAUSectionHeap* pSectionHeap)
-        : mSectionHeap(pSectionHeap), _4(), mStaticResource(), mStageResource(), mWaveSetStage(), mWaveSetScenario(), mPlayerMode(),
-          mPrevPlayerMode(), mIsNewPlayerMode(), _1D() {
+        : mSectionHeap(pSectionHeap), mStageBgmMode(), mStaticResource(), mStageResource(), mWaveSetStage(), mWaveSetScenario(), mPlayerMode(),
+          mPrevPlayerMode(), mIsNewPlayerMode(), mIsCubeBgmChangeInvalid() {
         ByamlIter& root = krp::AudDataHolder::getInstance()->mStageWaveTable;
         mStaticResource = root["StaticResource"];
         mStageResource = root["StageResource"];
@@ -158,7 +158,7 @@ namespace krp {
     }
 
     void AudSceneMgr::startScene() {
-        _4 = 0;
+        mStageBgmMode = 0;
         AudWrap::getSystem()->_82A = false;
         AudWrap::getSystem()->_82B = false;
         AudWrap::getSystem()->_82C = false;
@@ -168,7 +168,7 @@ namespace krp {
             effector->initParams();
         }
 
-        _1D = false;
+        mIsCubeBgmChangeInvalid = false;
         SpkSystem::reconnect(-1);
     }
 

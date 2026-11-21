@@ -46,7 +46,7 @@ namespace krp {
         }
 
         /* 0x00 */ JAUSectionHeap* mSectionHeap;
-        /* 0x04 */ u32 _4;
+        /* 0x04 */ s32 mStageBgmMode;
         /* 0x08 */ ByamlIter mStaticResource;
         /* 0x10 */ ByamlIter mStageResource;
         /* 0x18 */ ByamlIter mWaveSetStage;
@@ -54,6 +54,6 @@ namespace krp {
         /* 0x28 */ s32 mPlayerMode;
         /* 0x2C */ s32 mPrevPlayerMode;
         /* 0x30 */ bool mIsNewPlayerMode;
-        /* 0x31 */ bool _1D;
+        /* 0x31 */ bool mIsCubeBgmChangeInvalid;
     };
 }; // namespace krp

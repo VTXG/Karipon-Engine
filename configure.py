@@ -1722,7 +1722,7 @@ config.libs = [
             Object(MatchingFor(), "Game/Map/LightPointCtrl.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Map/LightZoneDataHolder.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Map/NamePosHolder.cpp"),
-            Object(MatchingFor(), "Game/Map/OceanBowl.cpp"),
+            Object(MatchingFor(ALL_WII), "Game/Map/OceanBowl.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Map/OceanBowlBloomDrawer.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Map/OceanBowlPoint.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Map/OceanHomeMapCtrl.cpp"),
@@ -2548,7 +2548,7 @@ config.libs = [
             Object(MatchingFor(), "Game/Screen/MiiSelect.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Screen/MiiSelectIcon.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Screen/MissLayout.cpp"),
-            Object(MatchingFor(), "Game/Screen/MoviePlayerSimple.cpp"),
+            Object(MatchingFor(ALL_WII), "Game/Screen/MoviePlayerSimple.cpp"),
             Object(MatchingFor(), "Game/Screen/MoviePlayingSequence.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Screen/MovieSubtitles.cpp"),
             Object(MatchingFor(ALL_WII), "Game/Screen/MovieSubtitlesDataTable.cpp"),
@@ -2738,10 +2738,9 @@ config.libs = [
             Object(MatchingFor(), "Game/System/StorySequenceExecutor.cpp"),
             Object(MatchingFor(ALL_WII), "Game/System/SysConfigFile.cpp"),
             Object(MatchingFor(ALL_WII), "Game/System/UserFile.cpp"),
+            Object(MatchingFor(ALL_WII), "Game/System/StoryProgressTable.cpp"),
+            Object(MatchingFor(ALL_WII), "Game/System/GalaxyInfoTable.cpp"),
             Object(MatchingFor(ALL_WII), "Game/System/ErrorMessageArchive.cpp"),
-
-            # Karipon
-            # Removed Object(MatchingFor(ALL_WII), "Game/System/BCSVInclude.s"),
         ],
     ),
     GameLib(
@@ -3014,6 +3013,12 @@ config.libs = [
         ],
     ),
     SDKLib(
+        "mix",
+        [
+            Object(MatchingFor(), "RVL_SDK/mix/mix.c"),
+        ],
+    ),
+    SDKLib(
         "mtx",
         [
             Object(MatchingFor(), "RVL_SDK/mtx/mtx.c"),
@@ -3128,10 +3133,25 @@ config.libs = [
         ],
     ),
     SDKLib(
+        "seq",
+        [
+            Object(MatchingFor(), "RVL_SDK/seq/seq.c"),
+        ],
+    ),
+    SDKLib(
         "si",
         [
             Object(MatchingFor(), "RVL_SDK/si/SIBios.c"),
             Object(MatchingFor(ALL_WII), "RVL_SDK/si/SISamplingRate.c"),
+        ],
+    ),
+    SDKLib(
+        "syn",
+        [
+            Object(MatchingFor(), "RVL_SDK/syn/synmix.c"),
+            Object(MatchingFor(), "RVL_SDK/syn/syn.c"),
+            Object(MatchingFor(), "RVL_SDK/syn/synctrl.c"),
+            Object(MatchingFor(), "RVL_SDK/syn/synvoice.c"),
         ],
     ),
     SDKLib(
