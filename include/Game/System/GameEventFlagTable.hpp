@@ -30,9 +30,6 @@ public:
 };
 
 namespace GameEventFlagTable {
-#ifdef KRP_CORE
-    void init();
-#endif
     GameEventFlagIter getBeginIter();
     GameEventFlagAccessor makeAccessor(const char*);
     s32 getTableSize();

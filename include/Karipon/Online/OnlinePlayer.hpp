@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Karipon/Online/OnlinePacket.hpp"
 #include <Game/LiveActor/LiveActor.hpp>
 
 class XanimePlayer;
@@ -17,12 +16,12 @@ namespace krp {
         void reset();
 
         OnlinePlayerActor* mActor;
-        OnlineString< 32 > mStageName;
+        char mStageName[32];
         s32 mScenarioNo;
         TVec3f mPosition;
         TVec3f mRotation;
         TVec3f mScale;
-        OnlineString< 32 > mAnimName;
+        char mAnimName[32];
         u32 mAnimNameHash;
         f32 mAnimFrame;
         f32 mAnimWeights[4];

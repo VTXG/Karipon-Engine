@@ -15,7 +15,7 @@
 #include "Game/Util/MathUtil.hpp"
 #include <cstdio>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
@@ -34,7 +34,7 @@ GameDataHolder::GameDataHolder(const UserFile* pUserFile)
     mSpinDriverPathStorage = new SpinDriverPathStorage();
     mStarPieceAlmsStorage = new StarPieceAlmsStorage();
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
     mMapInfo = new JMapInfo();
     mMapInfo->attach(StoryProgressTable_bcsv_start);
 #endif
@@ -222,7 +222,7 @@ void GameDataHolder::setPowerStar(const char* pGalaxyName, s32 scenarioNum, bool
     makeGalaxyScenarioAccessor(pGalaxyName, scenarioNum).setPowerStarFlag(set);
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 bool GameDataHolder::isTicoCoinCollected(const char* pGalaxyName, s32 id) const {
     return mAllGalaxyStorage->getGalaxyStorage(pGalaxyName)->isTicoCoinCollected(id);
 }
@@ -320,7 +320,7 @@ bool GameDataHolder::isCompleteMarioAndLuigi() const {
 }
 
 bool GameDataHolder::isPassedStoryEvent(const char* pEventName) const {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     return krp::SystemDataHolder::getInstance()->getStoryEventProgress(pEventName) <= mPlayerStatus->mStoryProgress;
 #else
     JMapInfoIter iter = mMapInfo->findElement("name", pEventName, 0);
@@ -332,7 +332,7 @@ bool GameDataHolder::isPassedStoryEvent(const char* pEventName) const {
 }
 
 void GameDataHolder::followStoryEventByName(const char* pEventName) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mPlayerStatus->mStoryProgress = krp::SystemDataHolder::getInstance()->getStoryEventProgress(pEventName);
 #else
     JMapInfoIter iter = mMapInfo->findElement("name", pEventName, 0);

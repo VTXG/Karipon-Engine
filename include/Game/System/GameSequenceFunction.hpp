@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Karipon/Globals.hpp>
 #include <revolution/types.h>
 
 class GalaxyMoveArgument;
@@ -28,17 +29,13 @@ namespace GameSequenceFunction {
     void requestChangeScene(const char*);
     void requestGalaxyMove(const GalaxyMoveArgument&);
     void requestCancelScenarioSelect();
-#ifdef KRP_CORE
-    void sendStageResultSequenceParam(const char*, s32, int, int, u8);
-#else
-    void sendStageResultSequenceParam(const char*, s32, int, int);
-#endif
+    void sendStageResultSequenceParam(const char*, s32, int, int IF_TARGET_KRP(, u8));
     bool hasStageResultSequence() NO_INLINE;
     const char* getClearedStageName() NO_INLINE;
     s32 getClearedPowerStarId();
     int getClearedStarPieceNum();
     int getClearedCoinNum();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     void onTicoCoinCollected(s32 id);
     bool isTicoCoinCollected(s32 id);
     u8 getTicoCoinCollectedFlag();
@@ -51,11 +48,11 @@ namespace GameSequenceFunction {
     bool isGrandStarAtResultSequence();
     bool hasRetryGalaxySequence();
     bool isNeedToReflectStageResultSequenceStarPiece();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool isNeedToReflectStageResultSequenceTicoCoin();
 #endif
     void reflectStageResultSequenceCoin();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     void reflectStageResultSequenceTicoCoin();
 #endif
     void resetStageResultSequenceParam();

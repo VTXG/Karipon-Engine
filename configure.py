@@ -123,20 +123,6 @@ parser.add_argument(
     help="enable Karipon core",
     default=True,
 )
-parser.add_argument(
-    "--krp-feature-online",
-    dest="krp_feature_online",
-    action="store_true",
-    help="enable Karipon online multiplayer",
-    default=True,
-)
-parser.add_argument(
-    "--krp-feature-optimize",
-    dest="krp_feature_optimize",
-    action="store_true",
-    help="enable Karipon optimizations",
-    default=True,
-)
 args = parser.parse_args()
 
 config = ProjectConfig()
@@ -176,11 +162,7 @@ config.asflags = [
 ]
 
 if args.krp_feature_core:
-    config.asflags.append(f"--defsym KRP_CORE=1")
-if args.krp_feature_online:
-    config.asflags.append(f"--defsym KRP_ONLINE=1")
-if args.krp_feature_optimize:
-    config.asflags.append(f"--defsym KRP_OPTIMIZE=1")
+    config.asflags.append(f"--defsym TARGET_KRP=1")
 
 config.ldflags = [
     "-fp hardware",
@@ -211,11 +193,7 @@ config.context_defines = ["DECOMPCTX"]
 global_defs = [f"-d VERSION={version_num}"] + [f"-d {VERSIONS[v]}={v}" for v in range(len(VERSIONS))] 
 
 if args.krp_feature_core:
-    global_defs.append(f"-DKRP_CORE")
-if args.krp_feature_online:
-    global_defs.append(f"-DKRP_ONLINE")
-if args.krp_feature_optimize:
-    global_defs.append(f"-DKRP_OPTIMIZE")
+    global_defs.append(f"-DTARGET_KRP")
 
 # Base flags, common to most GC/Wii games.
 # Generally leave untouched, with overrides added below.

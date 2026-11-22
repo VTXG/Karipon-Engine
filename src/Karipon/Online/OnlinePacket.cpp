@@ -1,23 +1,18 @@
 #include "Karipon/Online/OnlinePacket.hpp"
-#include <cstdio>
+#include <cstring>
 
 namespace krp {
-    void copyNetworkString(char* pBuff, const char* pStr, u32 size) {
-        int len = snprintf(pBuff, size, "%s", pStr) + 1;
-        pBuff[len >= size ? size - 1 : len] = '\0';
-    }
+    OnlinePacketStream::OnlinePacketStream() : mData(), mPosition(), mSize(), mCapacity(), mIsError() {}
 
-    OnlinePacket::OnlinePacket() {
-        reset();
-    }
-
-    void OnlinePacket::reset() {
-        mSize = 0;
+    void OnlinePacketStream::attach(u8* pData, u32 size, u32 capacity) {
+        mData = pData;
+        mPosition = 0;
+        mSize = size;
+        mCapacity = capacity;
         mIsError = false;
-        seek(0);
     }
 
-    void OnlinePacket::read(void* pBuffer, u32 size) {
+    void OnlinePacketStream::read(void* pBuffer, u32 size) {
         if (size == 0) {
             return;
         }
@@ -32,13 +27,13 @@ namespace krp {
         memcpy(pBuffer, mData + mPosition, size);
     }
 
-    void OnlinePacket::write(const void* pBuffer, u32 size) {
+    void OnlinePacketStream::write(const void* pBuffer, u32 size) {
         if (size == 0) {
             return;
         }
 
         u32 newPosition = mPosition + size;
-        if (newPosition > sizeof(mData)) {
+        if (newPosition > mCapacity) {
             mPosition = mSize;
             mIsError = true;
             return;

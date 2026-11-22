@@ -4,15 +4,16 @@
 #include "Game/System/GameDataFunction.hpp"
 #include "Game/Util/EventUtil.hpp"
 #include "Game/Util/StringUtil.hpp"
+#include <Karipon/Globals.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
 #define COMET_CATEGORY_NORMAL 0
 #define COMET_CATEGORY_COIN_100 1
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 const GalaxyCometTimePaper sCometTimeTableGrandGalaxy1[] = {
     {"EggStarGalaxy", COMET_CATEGORY_NORMAL},
     {"HoneyBeeKingdomGalaxy", COMET_CATEGORY_NORMAL},
@@ -291,19 +292,13 @@ void GalaxyCometTimeTable::advance() {
 }
 
 GalaxyCometScheduler::GalaxyCometScheduler() : mTimeTables(), mEnabled(true) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
-    mTimeTables.init(systemDataHolder->mCometTable.size());
-#else
-    mTimeTables.init(6);
 #endif
+    mTimeTables.init(TARGET_KRP_IF_ELSE(systemDataHolder->mCometTable.size(), 6));
 
     for (s32 i = 0; i < mTimeTables.size(); i++) {
-#ifdef KRP_CORE
-        mTimeTables[i] = new GalaxyCometTimeTable(systemDataHolder->mCometTable[i]);
-#else
-        mTimeTables[i] = new GalaxyCometTimeTable(sGalaxyCometTimerPaper[i]);
-#endif
+        mTimeTables[i] = new GalaxyCometTimeTable(TARGET_KRP_IF_ELSE(systemDataHolder->mCometTable, sGalaxyCometTimerPaper)[i]);
     }
 }
 
@@ -401,25 +396,14 @@ bool GalaxyCometScheduler::isCometLand(const char* pGalaxyName) const {
 }
 
 s32 GalaxyCometScheduler::getEncounterCometPowerStarId(const char* pGalaxyName) const {
-#ifdef KRP_CORE
-    GalaxyStatusAccessor accessor = MR::makeGalaxyStatusAccessor(pGalaxyName);
-#else
-    MR::makeGalaxyStatusAccessor(pGalaxyName);
-#endif
+    IF_TARGET_KRP(GalaxyStatusAccessor accessor = ) MR::makeGalaxyStatusAccessor(pGalaxyName);
     GalaxyCometTimeTable* timeTable = findFromGalaxy(pGalaxyName);
 
     switch (timeTable->getCometCategory()) {
-#ifdef KRP_CORE
     case COMET_CATEGORY_NORMAL:
-        return accessor.getNormalCometScenarioNo();
+        return TARGET_KRP_IF_ELSE(accessor.getNormalCometScenarioNo(), 4);
     case COMET_CATEGORY_COIN_100:
-        return accessor.getCoin100CometScenarioNo();
-#else
-    case COMET_CATEGORY_NORMAL:
-        return 4;
-    case COMET_CATEGORY_COIN_100:
-        return 5;
-#endif
+        return TARGET_KRP_IF_ELSE(accessor.getCoin100CometScenarioNo(), 5);
     default:
         return 0;
     }

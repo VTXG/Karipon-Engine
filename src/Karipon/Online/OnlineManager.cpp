@@ -49,9 +49,8 @@ namespace krp {
     }
 
     void OnlineManager::exeConnected() {
-        for (u32 i = 0; i < 60; i++) {
+        for (u32 i = 0; i < 50; i++) {
             char buffer[0x100];
-
             IOSError err = krp::NetworkFunction::recv(mSocket, buffer, sizeof(buffer), SO_MSG_NONBLOCK);
 
             if (err < 0) {

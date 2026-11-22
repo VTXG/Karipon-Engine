@@ -22,7 +22,7 @@ public:
 
     /* 0x8C */ f32 mOrbitRadius;
     /* 0x90 */ f32 mAngle;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     /* 0x94 */ f32 mSpeed;
     /* 0x98 */ Color8 mColor;
     /* 0x9C */ Color8 mBloomColor;

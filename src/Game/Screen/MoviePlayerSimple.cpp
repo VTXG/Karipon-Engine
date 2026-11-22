@@ -59,7 +59,7 @@ void MoviePlayerSimple::init(const JMapInfoIter& rIter) {
     mPlayerWrapper->init(0);
 
     mHeap = JKRExpHeap::create(calcNeedMemoryForMovieWorks(), MR::getCurrentHeap(), true);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mHeap->setName("MoviePlayerHeap");
 #endif
 

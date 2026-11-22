@@ -12,7 +12,7 @@
 #include "Game/Util/ObjUtil.hpp"
 #include "Game/Util/SoundUtil.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include "Game/MapObj/MiniatureGalaxyHolder.hpp"
 #else
 #include "Game/Util/JMapUtil.hpp"
@@ -20,7 +20,7 @@
 
 namespace {
     const Vec cJumpOutDemoRotate = {347.0f, 0.0f, 0.0f};
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
     const char* cAstroDomeSkyTable[] = {"AstroDomeSkyA", "AstroDomeSkyB", "AstroDomeSkyC", "AstroDomeSkyA", "AstroDomeSkyB", "AstroDomeSkyC"};
 #endif
     const s32 cAppearanceBrkTotalFrame = 200;
@@ -44,11 +44,13 @@ namespace NrvAstroDomeSky {
 };  // namespace NrvAstroDomeSky
 
 AstroDomeSky::AstroDomeSky(const char* pName) : LiveActor(pName), mBrkFrame(), mColor(0x00, 0x00, 0x00, 0xFF), mProjmap() {
+#ifdef TARGET_KRP
     MiniatureGalaxyFunction::createHolder();
+#endif
 }
 
 void AstroDomeSky::init(const JMapInfoIter& rIter) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     const char* pSkyName = nullptr;
     MiniatureGalaxyFunction::getHolder()->mParamTable.tryGetValueByKey("Sky", &pSkyName);
 #else

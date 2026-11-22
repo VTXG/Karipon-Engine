@@ -213,7 +213,7 @@ public:
         return (void*)mEnd;
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     inline void setName(const char* pName) {
         mName = pName;
     }
@@ -231,7 +231,7 @@ public:
     /* 0x5C */ JSUList< JKRDisposer > mDisposerList;
     /* 0x68 */ bool mErrorFlag;
     /* 0x69 */ u8 _69;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     /* 0x6C */ const char* mName;
 #endif
 };

@@ -60,7 +60,7 @@ PlayerHeapHolder::PlayerHeapHolder() : mCondition(), mNapaHeap(), mGDDRHeap(), m
     mNapaHeap = PlayerHeapHolder::createHeap(0x500000, MR::getStationedHeapNapa());
     JKRExpHeap* gddr = PlayerHeapHolder::createHeap(0x500000, MR::getStationedHeapGDDR3());
     mGDDRHeap = gddr;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mNapaHeap->setName("PlayerHeapNapa");
     mGDDRHeap->setName("PlayerHeapGDDR");
 #endif

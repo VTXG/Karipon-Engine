@@ -232,7 +232,7 @@ void CameraDirector::calcSubjective() {
         if (mSubjectiveFrame <= 0) {
             mSubjectiveFrame = 0;
             if (mIsStartSubjectiveCamera) {
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
                 if (mNearZ >= 0.0f) {
                     MR::setNearZ(mNearZ);
                 }
@@ -573,7 +573,7 @@ void CameraDirector::startSubjectiveCamera(s32 camType) {
         mCameraManSubjective->activate(this);
         mNearZ = MR::getNearZ();
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
         MR::setNearZ(10.0f);
 #endif
         MR::turnOffDOFInSubjective();

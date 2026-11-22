@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/AudioLib/AudSceneMgr.hpp>
 
 // very quirky way to implement this

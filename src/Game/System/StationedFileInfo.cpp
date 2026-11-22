@@ -952,7 +952,7 @@ namespace {
             MR::StationedFileInfo::LOAD_TYPE_MOUNT_RESOURCE_LAYOUT,
             "/LayoutData/GameOver.arc",
         },
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         {
             MR::StationedFileInfo::HEAP_TYPE_GDDR,
             MR::StationedFileInfo::LOAD_TYPE_MOUNT,

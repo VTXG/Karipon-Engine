@@ -1,5 +1,5 @@
 #include "Game/System/StoryProgressTable.hpp"
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 #include <assets/StoryProgressTable.hpp>
 #endif

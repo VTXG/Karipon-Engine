@@ -9,7 +9,7 @@ public:
         /* 0x01 */ IMAGE_EFFECT_TYPE_SIMPLE_BLOOM,
         /* 0x02 */ IMAGE_EFFECT_TYPE_BLUR,
         /* 0x03 */ IMAGE_EFFECT_TYPE_DOF,
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         /* 0x04 */ IMAGE_EFFECT_TYPE_POST_FOG,
 #endif
     };

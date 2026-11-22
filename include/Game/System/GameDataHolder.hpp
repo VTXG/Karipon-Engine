@@ -41,7 +41,7 @@ public:
     bool hasPowerStar(const char*, s32) const;
     bool hasGrandStar(int) const;
     void setPowerStar(const char*, s32, bool);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool isTicoCoinCollected(const char* pGalaxyName, s32 id) const;
 #endif
     s32 getPowerStarNumOwned(const char*) const;

@@ -4,13 +4,14 @@
 #include "Game/Util/StringUtil.hpp"
 #include <JSystem/JSupport/JSUMemoryInputStream.hpp>
 #include <JSystem/JSupport/JSUMemoryOutputStream.hpp>
+#include <Karipon/Globals.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
 namespace {
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
     const GameEventValue cGameEventValueTable[] = {
         {"ペンギンレース[オーシャンリング]/hi", 0},
         {"ペンギンレース[オーシャンリング]/lo", 90 * 60},
@@ -44,14 +45,12 @@ namespace {
 }; // namespace
 
 GameEventValueChecker::GameEventValueChecker() : mValues(), mNumValues() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
-    mNumValues = systemDataHolder->mEventValueTable.size();
-    mValues = new u16[mNumValues];
-#else
-    mValues = new u16[ARRAY_SIZE(::cGameEventValueTable)];
-    mNumValues = ARRAY_SIZE(::cGameEventValueTable);
 #endif
+    u32 numValues = TARGET_KRP_IF_ELSE(systemDataHolder->mEventValueTable.size(), ARRAY_SIZE(::cGameEventValueTable));
+    mValues = new u16[numValues];
+    mNumValues = numValues;
     initializeData();
 }
 
@@ -72,7 +71,7 @@ u32 GameEventValueChecker::getSignature() const {
 }
 
 s32 GameEventValueChecker::serialize(u8* pData, u32 maxBufferSize) const {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
@@ -81,11 +80,8 @@ s32 GameEventValueChecker::serialize(u8* pData, u32 maxBufferSize) const {
     s32 hash;
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
-#ifdef KRP_CORE
-        hash = MR::getHashCode(systemDataHolder->mEventValueTable[idx].mName);
-#else
-        hash = MR::getHashCode(::cGameEventValueTable[idx].mName);
-#endif
+        const GameEventValue& eventValue = TARGET_KRP_IF_ELSE(systemDataHolder->mEventValueTable[idx], ::cGameEventValueTable[idx]);
+        hash = MR::getHashCode(eventValue.mName);
         const u16 value = mValues[idx];
 
         stream.writeU16(hash);
@@ -123,54 +119,41 @@ s32 GameEventValueChecker::deserialize(const u8* pData, u32 maxBufferSize) {
 }
 
 void GameEventValueChecker::initializeData() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
-#ifdef KRP_CORE
-        mValues[idx] = systemDataHolder->mEventValueTable[idx].mDefaultValue;
-#else
-        mValues[idx] = ::cGameEventValueTable[idx].mDefaultValue;
-#endif
+        const GameEventValue& eventValue = TARGET_KRP_IF_ELSE(systemDataHolder->mEventValueTable[idx], ::cGameEventValueTable[idx]);
+        mValues[idx] = eventValue.mDefaultValue;
     }
 }
 
 s32 GameEventValueChecker::findIndex(const char* pName) const {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
-#ifdef KRP_CORE
-        if (MR::isEqualString(pName, systemDataHolder->mEventValueTable[idx].mName)) {
+        const GameEventValue& eventValue = TARGET_KRP_IF_ELSE(systemDataHolder->mEventValueTable[idx], ::cGameEventValueTable[idx]);
+        if (MR::isEqualString(pName, eventValue.mName)) {
             return idx;
         }
-#else
-        if (MR::isEqualString(pName, ::cGameEventValueTable[idx].mName)) {
-            return idx;
-        }
-#endif
     }
 
     return -1;
 }
 
 s32 GameEventValueChecker::findIndexFromHashCode(u16 hash) const {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder* systemDataHolder = krp::SystemDataHolder::getInstance();
 #endif
 
     for (s32 idx = 0; idx < mNumValues; idx++) {
-#ifdef KRP_CORE
-        if (hash == static_cast< u16 >(MR::getHashCode(systemDataHolder->mEventValueTable[idx].mName))) {
+        const GameEventValue& eventValue = TARGET_KRP_IF_ELSE(systemDataHolder->mEventValueTable[idx], ::cGameEventValueTable[idx]);
+        if (hash == static_cast< u16 >(MR::getHashCode(eventValue.mName))) {
             return idx;
         }
-#else
-        if (hash == static_cast< u16 >(MR::getHashCode(::cGameEventValueTable[idx].mName))) {
-            return idx;
-        }
-#endif
     }
 
     return -1;

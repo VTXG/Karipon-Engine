@@ -25,7 +25,7 @@
 #include <JSystem/JUtility/JUTVideo.hpp>
 #include <revolution/vi.h>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/Online/OnlineManager.hpp>
 #include <Karipon/Tools/DebugPrint.hpp>
 #endif
@@ -33,7 +33,7 @@
 GameSystemObjHolder::GameSystemObjHolder()
     : mObjHolder(), mParticleResHolder(), mRenderModeObj(), mCaptureScreenDirector(), mScreenPreserver(), mAudioSystem(), mWPadHolder(),
       mFunctionAsyncExecutor(), mMessageHolder(), mStarPointerDirector(), mRandom(0), mLanguage(MR::getDecidedLanguageFromIPL()) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mOnlineManager = nullptr;
     mDebugPrint = nullptr;
 #endif
@@ -80,7 +80,7 @@ void GameSystemObjHolder::init() {
     initFunctionAsyncExecutor();
     initGameController();
     initDisplay();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     initNetwork();
 #endif
 }
@@ -96,7 +96,7 @@ void GameSystemObjHolder::update() {
     mWPadHolder->update();
     mFunctionAsyncExecutor->update();
     mStarPointerDirector->update();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mOnlineManager->update();
 #endif
 }
@@ -196,7 +196,7 @@ void GameSystemObjHolder::initDisplay() {
 
     mCaptureScreenDirector = new CaptureScreenDirector();
     mScreenPreserver = new ScreenPreserver();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mDebugPrint = new krp::DebugPrint();
 #endif
 
@@ -204,7 +204,7 @@ void GameSystemObjHolder::initDisplay() {
     VISetTrapFilter(VI_FALSE);
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 void GameSystemObjHolder::initNetwork() {
     mOnlineManager = new krp::OnlineManager();
 }

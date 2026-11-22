@@ -20,7 +20,7 @@ u32 ARALT_AramStartAdr = 0x90000000;
 
 JKRHeap::JKRHeap(void* data, u32 size, JKRHeap* parent, bool error) : JKRDisposer(), mChildTree(this), mDisposerList() {
     OSInitMutex(&mMutex);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mName = nullptr;
 #endif
     mSize = size;

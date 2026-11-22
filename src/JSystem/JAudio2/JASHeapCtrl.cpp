@@ -261,7 +261,7 @@ void JASKernel::setupRootHeap(JKRSolidHeap* pHeap, u32 size) {
     sSystemHeap = JKRExpHeap::create(size, pHeap, false);
     sCommandHeap = new (pHeap, 0) JASMemChunkPool< 1024, JASThreadingModel::ObjectLevelLockable >();
     JASDram = pHeap;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     sSystemHeap->setName("AudKernelSystemHeap");
 #endif
 }

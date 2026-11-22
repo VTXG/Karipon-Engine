@@ -1,4 +1,4 @@
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 
 #include "Game/AudioLib/AudSceneMgr.hpp"
 #include "Game/AudioLib/AudBgmMgr.hpp"

@@ -33,7 +33,7 @@ JKRArchive::~JKRArchive() {
 }
 
 bool JKRArchive::isSameName(CArcName& rName, u32 nameOffset, u16 hash) const {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     return strcasecmp(mStringTable + nameOffset, rName.mName) == 0;
 #else
     if (rName.mHash != hash) {

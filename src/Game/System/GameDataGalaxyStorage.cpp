@@ -44,7 +44,7 @@ void GameDataSomeScenarioAccessor::updateMaxCoinNum(int coinNum) {
     }
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 u8 GameDataSomeScenarioAccessor::getTicoCoinFlag() const {
     return mSomeGalaxyStorage->mTicoCoinFlag;
 }
@@ -71,11 +71,7 @@ GameDataSomeGalaxyStorage::GameDataSomeGalaxyStorage(const GalaxyStatusAccessor&
 void GameDataSomeGalaxyStorage::resetAllData() {
     mPowerStarOwnedFlags = 0b00000000;
     mAlreadyVisitedFlags = 0b00000000;
-#ifdef KRP_CORE
-    mTicoCoinFlag = 0b00000000;
-#else
-    _A = 0;
-#endif
+    TARGET_KRP_IF_ELSE(mTicoCoinFlag, _A) = 0;
     _B = 0;
 
     for (s32 idx = 0; idx < 8; idx++) {
@@ -108,7 +104,7 @@ s32 GameDataSomeGalaxyStorage::deserialize(const BinaryDataContentAccessor& rAcc
         mAlreadyVisitedFlags = 0b00000000;
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     u8* ticoCoinFlag = (u8*)rAccessor.getPointer("mTicoCoinFlag", (u8*)pData);
     if (ticoCoinFlag != nullptr) {
         mTicoCoinFlag = *ticoCoinFlag;
@@ -185,7 +181,7 @@ GameDataSomeGalaxyStorage* GameDataAllGalaxyStorage::getGalaxyStorage(int index)
     return mSomeGalaxyStorages[index];
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 GameDataSomeGalaxyStorage* GameDataAllGalaxyStorage::getGalaxyStorage(const char* pGalaxyName) {
     return mSomeGalaxyStorages[findIndex(pGalaxyName)];
 }
@@ -250,7 +246,7 @@ void GameDataAllGalaxyStorage::initHeaderSerializer() {
     mHeaderSerializer->addAttribute("mGalaxyName", sizeof(u16));
     mHeaderSerializer->addAttribute("mPowerStarFlag", sizeof(u8));
     mHeaderSerializer->addAttribute("mFirstPlayFlag", sizeof(u8));
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mHeaderSerializer->addAttribute("mTicoCoinFlag", sizeof(u8));
 #endif
     mHeaderSerializer->addAttribute("mMaxCoinNum", sizeof(u16) * 8);
@@ -282,7 +278,7 @@ void GameDataSomeGalaxyStorage::serialize(const BinaryDataContentAccessor& rAcce
     u8* firstPlayFlags = (u8*)rAccessor.getPointer("mFirstPlayFlag", pData);
     *firstPlayFlags = mAlreadyVisitedFlags;
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     u8* ticoCoinFlag = (u8*)rAccessor.getPointer("mTicoCoinFlag", pData);
     *ticoCoinFlag = mTicoCoinFlag;
 #endif

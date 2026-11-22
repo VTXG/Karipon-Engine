@@ -17,7 +17,7 @@
 #include "Game/Util/SingletonHolder.hpp"
 #include <cstdio>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include "Game/Util/EventUtil.hpp"
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
@@ -249,7 +249,7 @@ namespace GameDataFunction {
         return ::getGameDataTemporaryInGalaxy()->mLast1upStarPieceNum;
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool isTicoCoinCollected(const char* pGalaxyName, s32 id) {
         return getCurrentGameDataHolder()->isTicoCoinCollected(pGalaxyName, id);
     }
@@ -358,7 +358,7 @@ namespace GameDataFunction {
         return grandStarNum;
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     s32 calcOpenedAstroDomeNum(const GameDataHolder* pGameDataHolder) {
         s32 astroDomeNum = 0;
         s32 entryNum = krp::SystemDataHolder::getInstance()->mDomeParamTable.getSize();
@@ -380,7 +380,7 @@ namespace GameDataFunction {
         ::getGameDataTemporaryInGalaxy()->clearAlreadyDoneFlag();
         ::getGameDataTemporaryInGalaxy()->resetStageResultStarPieceParam();
         ::getGameDataTemporaryInGalaxy()->resetStageResultCoinParam();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         ::getGameDataTemporaryInGalaxy()->resetStageResultTicoCoinParam(true);
 #endif
     }
@@ -388,7 +388,7 @@ namespace GameDataFunction {
     void resetGameDataGoToGalaxyRetry() {
         ::getGameDataTemporaryInGalaxy()->resetRaceBestTime();
         ::getGameDataTemporaryInGalaxy()->mHasRetryGalaxySequence = true;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         ::getGameDataTemporaryInGalaxy()->resetStageResultTicoCoinParam(false);
 #endif
     }

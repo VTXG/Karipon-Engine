@@ -16,7 +16,7 @@
 #include "Game/Util/StringUtil.hpp"
 #include <cstdio>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include "Game/System/GameDataHolder.hpp"
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
@@ -260,7 +260,11 @@ namespace MR {
     }
 
     bool isOnGameEventFlagChildsRoom() {
+#ifdef TARGET_KRP
         return MR::isOpenAstroDome(6);
+#else
+        return MR::calcOpenedAstroDomeNum() >= 6;
+#endif
     }
 
     bool isOnGameEventFlagLibraryRoom() {
@@ -424,8 +428,8 @@ namespace MR {
     }
 
     void sendStageResultSequenceParam(s32 scenarioNo) {
-        GameSequenceFunction::sendStageResultSequenceParam(MR::getCurrentStageName(), scenarioNo, MR::getStarPieceNum(), MR::getCoinNum(),
-                                                           GameSequenceFunction::getTicoCoinCollectedFlag());
+        GameSequenceFunction::sendStageResultSequenceParam(MR::getCurrentStageName(), scenarioNo, MR::getStarPieceNum(),
+                                                           MR::getCoinNum() IF_TARGET_KRP(, GameSequenceFunction::getTicoCoinCollectedFlag()));
     }
 
     bool isOnGameEventFlagPowerStarSuccess(const char* pGalaxyName, s32 starId) {
@@ -437,21 +441,36 @@ namespace MR {
     }
 
     s32 calcOpenedAstroDomeNum() {
+#ifdef TARGET_KRP
         if (GameSequenceFunction::hasStageResultSequence()) {
             return GameDataFunction::calcOpenedAstroDomeNum(GameDataFunction::getSceneStartGameDataHolder());
         }
 
         return GameDataFunction::calcOpenedAstroDomeNum(GameDataFunction::getCurrentGameDataHolder());
+#else
+        s32 openedAstroDomeNum;
+
+        if (GameSequenceFunction::hasStageResultSequence()) {
+            openedAstroDomeNum = GameDataFunction::calcGrandStarNum(GameDataFunction::getSceneStartGameDataHolder());
+        } else {
+            openedAstroDomeNum = GameDataFunction::calcGrandStarNum(GameDataFunction::getCurrentGameDataHolder());
+        }
+
+        if (GameDataFunction::hasGrandStar(7)) {
+            openedAstroDomeNum -= 1;
+        }
+
+        return openedAstroDomeNum;
+#endif
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool isOpenAstroDome(s32 domeID) {
         const GameDataHolder* gameDataHolder;
 
         if (GameSequenceFunction::hasStageResultSequence()) {
             gameDataHolder = GameDataFunction::getSceneStartGameDataHolder();
-        }
-        else {
+        } else {
             gameDataHolder = GameDataFunction::getCurrentGameDataHolder();
         }
 
@@ -1114,4 +1133,4 @@ namespace MR {
     void onMsgLedPattern() {
         GameDataFunction::setGameEventValue("MsgLedPattern", 1);
     }
-};  // namespace MR
+}; // namespace MR

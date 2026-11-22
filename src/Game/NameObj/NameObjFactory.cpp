@@ -17,7 +17,7 @@
 #include "Game/Util/FileUtil.hpp"
 #include "Game/Util/StringUtil.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/AreaObj/PostFogArea.hpp>
 #include <Karipon/Map/ProductMapCreator.hpp>
 #include <Karipon/MapObj/TicoCoin.hpp>
@@ -5966,7 +5966,7 @@ namespace {
             createNameObj< FileSelector >,
             nullptr,
         },
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         {
             "PostFogCube",
             createBaseOriginCube< krp::PostFogArea >,
@@ -7751,7 +7751,7 @@ namespace {
             "MovieStarter",
             "MoviePadRumbleEndingB",
         },
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         {
             "TicoCoin",
             "TicoCoin",
@@ -8137,7 +8137,7 @@ namespace NameObjFactory {
             return PlanetMapCreatorFunction::getPlanetMapCreator(pName);
         }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         if (krp::ProductMapCreatorFunction::isRegisteredObj(pName)) {
             return krp::ProductMapCreatorFunction::getProductMapCreator(pName);
         }

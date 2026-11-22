@@ -6,13 +6,14 @@
 #include "Game/Util/StringUtil.hpp"
 #include <algorithm>
 #include <cstdio>
+#include <Karipon/Globals.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
 namespace {
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
     static const GameEventFlag sGameEventFlagStatic[] = {
         {"AppearFlipPanelExGalaxy", GameEventFlag::Type_GalaxyOpenStar, 1, 0, 0, 0, "FlipPanelExGalaxy", 0},
         {"AppearSurfingLv1Galaxy", GameEventFlag::Type_GalaxyOpenStar, 1, 0, 0, 0, "SurfingLv1Galaxy", 0},
@@ -293,22 +294,14 @@ namespace GameEventFlagTable {
     }
 
     s32 getTableSize() {
-#ifdef KRP_CORE
-        return krp::SystemDataHolder::getInstance()->mEventFlagTable.size();
-#else
-        return ARRAY_SIZE(::sGameEventFlagStatic);
-#endif
+        return TARGET_KRP_IF_ELSE(krp::SystemDataHolder::getInstance()->mEventFlagTable.size(), ARRAY_SIZE(::sGameEventFlagStatic));
     }
 
     const GameEventFlag* getFlag(int index) {
         if (index < 0 || index >= getTableSize()) {
             return nullptr;
         } else {
-#ifdef KRP_CORE
-            return &::krp::SystemDataHolder::getInstance()->mEventFlagTable[index];
-#else
-            return &::sGameEventFlagStatic[index];
-#endif
+            return TARGET_KRP_IF_ELSE(&krp::SystemDataHolder::getInstance()->mEventFlagTable[index], &::sGameEventFlagStatic[index]);
         }
     }
 
@@ -391,11 +384,7 @@ namespace GameEventFlagTable {
     }
 
     int getIndex(const GameEventFlag* pFlag) {
-#ifdef KRP_CORE
-        return pFlag - krp::SystemDataHolder::getInstance()->mEventFlagTable.begin();
-#else
-        return pFlag - &::sGameEventFlagStatic[0];
-#endif
+        return pFlag - TARGET_KRP_IF_ELSE(krp::SystemDataHolder::getInstance()->mEventFlagTable.begin(), &::sGameEventFlagStatic[0]);
     }
 
     bool isDependedAnother(const char* pFlagName1, const char* pFlagName2) {
@@ -475,7 +464,7 @@ namespace GameEventFlagTable {
     }
 
     s32 getGalaxyDependedFlags(const char** pFlags, int a1, const char* pName) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         JMapInfoIter iter = krp::SystemDataHolder::getInstance()->getGalaxyInfo(pName);
         const JMapInfo& info = *iter.mInfo;
 #else

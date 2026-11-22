@@ -128,8 +128,8 @@ namespace GameSequenceFunction {
         ::getGameSequenceProgress()->requestCancelScenarioSelect();
     }
 
-    void sendStageResultSequenceParam(const char* pStageName, s32 powerStarId, int starPieceNum, int coinNum, u8 ticoCoinFlag) {
-        ::getGameDataTemporaryInGalaxy()->receiveStageResultParam(pStageName, powerStarId, starPieceNum, coinNum, ticoCoinFlag);
+    void sendStageResultSequenceParam(const char* pStageName, s32 powerStarId, int starPieceNum, int coinNum IF_TARGET_KRP(, u8 ticoCoinFlag)) {
+        ::getGameDataTemporaryInGalaxy()->receiveStageResultParam(pStageName, powerStarId, starPieceNum, coinNum IF_TARGET_KRP(, ticoCoinFlag));
     }
 
     bool hasStageResultSequence() {
@@ -152,6 +152,7 @@ namespace GameSequenceFunction {
         return ::getGameDataTemporaryInGalaxy()->mCoinNum;
     }
 
+#ifdef TARGET_KRP
     void onTicoCoinCollected(s32 id) {
         ::getGameDataTemporaryInGalaxy()->onTicoCoinCollected(id);
     }
@@ -167,6 +168,7 @@ namespace GameSequenceFunction {
     void saveTemporaryTicoCoin() {
         ::getGameDataTemporaryInGalaxy()->saveTemporaryTicoCoin();
     }
+#endif
 
     bool hasPowerStarYetAtResultSequence() {
         if (hasStageResultSequence() == false) {
@@ -206,12 +208,14 @@ namespace GameSequenceFunction {
         return getClearedStarPieceNum() != 0;
     }
 
+#ifdef TARGET_KRP
     bool isNeedToReflectStageResultSequenceTicoCoin() {
         u8 ticoCoinFlag = getTicoCoinCollectedFlag();
 
         GameDataSomeScenarioAccessor accessor = ::getGameDataHolder()->makeGalaxyScenarioAccessor(getClearedStageName(), getClearedPowerStarId());
         return (ticoCoinFlag & ~accessor.getTicoCoinFlag()) != 0;
     }
+#endif
 
     void reflectStageResultSequenceCoin() {
         u32 clearedCoinNum = getClearedCoinNum();
@@ -220,12 +224,14 @@ namespace GameSequenceFunction {
         accessor.updateMaxCoinNum(clearedCoinNum);
     }
 
+#ifdef TARGET_KRP
     void reflectStageResultSequenceTicoCoin() {
         u8 ticoCoinFlag = getTicoCoinCollectedFlag();
 
         GameDataSomeScenarioAccessor accessor = ::getGameDataHolder()->makeGalaxyScenarioAccessor(getClearedStageName(), getClearedPowerStarId());
         accessor.updateTicoCoinFlag(ticoCoinFlag);
     }
+#endif
 
     void resetStageResultSequenceParam() {
         ::getGameDataTemporaryInGalaxy()->resetStageResultParam();

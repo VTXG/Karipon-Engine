@@ -129,7 +129,7 @@ enum SceneObj {
     SceneObj_PrologueHolder = 0x79,
     SceneObj_StaffRoll = 0x7A,
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     SceneObj_ProductMapCreator = 0x7B,
     SceneObj_PostFog = 0x7C,
 #endif

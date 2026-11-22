@@ -2,7 +2,7 @@
 
 #include "Game/NameObj/NameObj.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/Screen/PostFog.hpp>
 #endif
 
@@ -45,7 +45,7 @@ public:
     void setBloomSimpleParams(ImageEffectArea*);
     void setScreenBlurParams(ImageEffectArea*);
     void setDepthOfFieldParams(ImageEffectArea*);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     void setPostFogParams(ImageEffectArea*);
 #endif
     void initPlayerSyncIntensity(ImageEffectArea*, ImageEffectState*);
@@ -69,7 +69,7 @@ public:
     /* 0x28 */ ImageEffectStateImpl::StateDepthOfField* mStateDepthOfField;
     /* 0x2C */ ImageEffectState* mState;
     /* 0x30 */ ImageEffectBase* mCurrentEffect;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     /* 0x34 */ krp::StatePostFog* mStatePostFog;
 #endif
 };

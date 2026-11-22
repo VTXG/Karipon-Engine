@@ -13,11 +13,6 @@ class GameSystemStationedArchiveLoader;
 class HomeButtonLayout;
 class HomeButtonStateNotifier;
 class SystemWipeHolder;
-#ifdef KRP_CORE
-namespace krp {
-    class SystemDataHolder;
-};
-#endif
 
 #ifdef __MWERKS__
 void main(void);

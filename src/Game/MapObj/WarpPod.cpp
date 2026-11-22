@@ -216,7 +216,7 @@ void WarpPod::init(const JMapInfoIter& rIter) {
 
     bool isNonActive = false;
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     if (!MR::isOpenAstroDome(mGrandstarReq)) {
         isNonActive = true;
     }

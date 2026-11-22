@@ -97,7 +97,7 @@ void GameScene::init() {
     MR::createSceneObj(SceneObj_CinemaFrame);
     MR::createSceneObj(SceneObj_PlanetMapCreator);
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     MR::createSceneObj(SceneObj_ProductMapCreator);
 #endif
 

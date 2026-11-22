@@ -1,6 +1,6 @@
 #include "Game/System/ErrorMessageArchive.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #ifndef ATTRIBUTE_ALIGN
 #if defined(__MWERKS__) || defined(__GNUC__)
 #define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))

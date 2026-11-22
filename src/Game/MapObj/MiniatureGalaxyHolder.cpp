@@ -8,11 +8,11 @@
 #include "Game/Util/SceneUtil.hpp"
 #include "Game/Util/StringUtil.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 namespace {
     MiniatureGalaxyHolder* getHolder() {
         return MR::getSceneObj< MiniatureGalaxyHolder >(SceneObj_MiniatureGalaxyHolder);
@@ -22,7 +22,7 @@ namespace {
 
 MiniatureGalaxyHolder::MiniatureGalaxyHolder()
     : LiveActor("ミニチュアギャラクシー保持"), mMiniatureGalaxyGroup(), _90(), mCometGalaxy(), mCometID(-1), _9C() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mParamTable = krp::SystemDataHolder::getInstance()->getDomeParams(MR::getCurrentScenarioNo());
 #endif
     mMiniatureGalaxyGroup = new LiveActorGroup("ミニチュアギャラクシーグループ", 16);
@@ -106,7 +106,7 @@ s32 MiniatureGalaxyHolder::calcIndex(const LiveActor* pActor) const {
     return index;
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 krp::ByamlIter MiniatureGalaxyHolder::getOrbitParams(s32 idx) {
     return mParamTable["Orbits"][idx];
 }
@@ -133,7 +133,7 @@ void MiniatureGalaxyHolder::updateCometStatus() {
     }
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 void MiniatureGalaxyFunction::createHolder() {
     MR::createSceneObj(SceneObj_MiniatureGalaxyHolder);
 }

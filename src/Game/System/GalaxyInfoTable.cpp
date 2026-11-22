@@ -1,5 +1,5 @@
 #include "Game/System/GalaxyInfoTable.hpp"
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 #include <assets/GalaxyInfoTable.hpp>
 #endif

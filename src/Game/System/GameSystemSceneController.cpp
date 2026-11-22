@@ -29,7 +29,7 @@
 #include "Game/System/DrawSyncManager.hpp"
 #endif
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
@@ -120,7 +120,7 @@ void GameSystemSceneController::initializeScene() {
     if (SingletonHolder< HeapMemoryWatcher >::get()->mFileCacheHeap == nullptr || !isSameAtNextSceneAndStage()) {
         u32 fileCacheSize = 0x1040400;
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         krp::ByamlIter params = krp::SystemDataHolder::getInstance()->getStageParams(mNextSceneControlInfo.mStage, mNextSceneControlInfo.mScenarioNo);
         if (params.isValid()) {
             params.tryGetValueByKey("FileCacheSize", &fileCacheSize);

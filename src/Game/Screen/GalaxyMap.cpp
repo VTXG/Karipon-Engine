@@ -22,8 +22,9 @@
 #include "Game/Util/StringUtil.hpp"
 #include <algorithm>
 #include <cstdio>
+#include <Karipon/Globals.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
@@ -424,7 +425,7 @@ namespace {
 };  // namespace
 
 void GalaxyMap::initPaneCtrlPointing() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     JMapInfo& galaxyInfo = krp::SystemDataHolder::getInstance()->mGalaxyInfoTable;
 #else
     JMapInfo galaxyInfo;
@@ -447,11 +448,7 @@ void GalaxyMap::initPaneCtrlPointing() {
         }
 
         const char* pGalaxyName = nullptr;
-#ifdef KRP_CORE
-        galaxyInfo.getValue(i, "Name", &pGalaxyName);
-#else
-        galaxyInfo.getValue(i, "name", &pGalaxyName);
-#endif
+        galaxyInfo.getValue(i, TARGET_KRP_IF_ELSE("Name", "name"), &pGalaxyName);
         GalaxyStatusAccessor accessor = MR::makeGalaxyStatusAccessor(pGalaxyName);
         MR::createAndAddPaneCtrl(this, pPaneName, 1);
         MR::addStarPointerTargetCircle(this, pPaneName, ::sPointingRange, TVec2f(0.0f, 0.0f), nullptr);

@@ -29,12 +29,12 @@ namespace krp {
     }
 
     void OnlinePlayerState::reset() {
-        mStageName.reset();
+        mStageName[0] = '\0';
         mScenarioNo = -1;
         mPosition.zero();
         mRotation.zero();
         mScale.zero();
-        mAnimName.reset();
+        mAnimName[0] = '\0';
         mAnimNameHash = 0;
         mAnimFrame = 0.0f;
         mAnimWeights[0] = 0.0f;

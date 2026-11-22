@@ -6,11 +6,11 @@
 #include "Game/Util/SceneUtil.hpp"
 #include "Game/Util/StringUtil.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 struct GalaxyTimeLimitInfo {
     /* 0x0 */ const char* mGalaxyName;
     /* 0x4 */ s32 mScenarioNo;
@@ -31,32 +31,35 @@ CometEventKeeper::CometEventKeeper() : mExecutorTimeLimit(nullptr), mScreenFilte
 void CometEventKeeper::init() {
     initCometStatus();
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::ByamlIter params = krp::SystemDataHolder::getInstance()->getStageParams(MR::getCurrentStageName(), MR::getCurrentScenarioNo());
 #endif
 
     if (isStartEvent("Red") || isStartEvent("Black")) {
-#ifdef KRP_CORE
-        u32 timeLimit = 0;
+        u32 timeLimit;
+
+#ifdef TARGET_KRP
+        timeLimit = 0;
 
         if (params.isValid()) {
             params.tryGetValueByKey("TimeLimit", &timeLimit);
         }
+#else
+        timeLimit = getTimeLimitFromTable(::sTimeLimitInfoTable, ARRAY_SIZE(::sTimeLimitInfoTable)) / 60;
+#endif
 
         mExecutorTimeLimit = new CometEventExecutorTimeLimit(timeLimit);
-#else
-        mExecutorTimeLimit = new CometEventExecutorTimeLimit(getTimeLimitFromTable(::sTimeLimitInfoTable, ARRAY_SIZE(::sTimeLimitInfoTable)) / 60);
-#endif
         mExecutorTimeLimit->initWithoutIter();
         mExecutorTimeLimit->kill();
     }
 
-#ifdef KRP_CORE
     const char* cometFilterName = mCometName;
 
+#ifdef TARGET_KRP
     if (params.isValid()) {
         params.tryGetValueByKey("CometFilter", &cometFilterName);
     }
+#endif
 
     if (cometFilterName != nullptr) {
         mScreenFilter = new GalaxyCometScreenFilter();
@@ -64,14 +67,6 @@ void CometEventKeeper::init() {
         mScreenFilter->_20 = true;
         mScreenFilter->setCometType(cometFilterName);
     }
-#else
-    if (mCometName != nullptr) {
-        mScreenFilter = new GalaxyCometScreenFilter();
-        mScreenFilter->initWithoutIter();
-        mScreenFilter->_20 = true;
-        mScreenFilter->setCometType(mCometName);
-    }
-#endif
 }
 
 bool CometEventKeeper::isStartEvent(const char* pParam1) const {
@@ -103,7 +98,7 @@ void CometEventKeeper::endCometEvent() {
     mScreenFilter->_20 = false;
 }
 
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
 u32 CometEventKeeper::getTimeLimitFromTable(const GalaxyTimeLimitInfo* pTable, int size) {
     for (int i = 0; i < size; i++) {
         const GalaxyTimeLimitInfo* pInfo = &pTable[i];

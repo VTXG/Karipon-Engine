@@ -13,7 +13,7 @@
 #include <JSystem/JKernel/JKRMemArchive.hpp>
 #include <JSystem/JKernel/JKRSolidHeap.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/AudioLib/AudDataHolder.hpp>
 #endif
 
@@ -37,7 +37,7 @@ AudSystemWrapper::AudSystemWrapper(JKRSolidHeap* pSolidHeap, JKRHeap* pHeap) {
     self->_28 = false;
     self->mDisableReset = false;
     mSpkHeap = JKRExpHeap::create(AudSpeakerWrap::getRequiredHeapSize(), pSolidHeap, false);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mSpkHeap->setName("AudSpeakerHeap");
 #endif
 }
@@ -49,7 +49,7 @@ void AudSystemWrapper::requestResourceForInitialize() {
     MR::mountAsyncArchive(sJaiMeArc, mSolidHeap);
     MR::mountAsyncArchive(AudSpeakerWrap::getResName(), mSpkHeap);
     MR::mountAsyncArchive(sJaiRemixArc, mSolidHeap);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     MR::mountAsyncArchive("/SystemData/AudDataTable.arc", mSolidHeap);
 #endif
 }
@@ -241,7 +241,7 @@ void AudSystemWrapper::receiveResourceForInitialize() {
     mJaiMeRes = MR::receiveArchive(sJaiMeArc);
     mSpkRes = MR::receiveArchive(AudSpeakerWrap::getResName());
     mJaiRemixSeqRes = MR::receiveArchive(sJaiRemixArc);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::AudDataHolder::initInstance();
     krp::AudDataHolder::getInstance()->init();
 #endif

@@ -7,13 +7,14 @@
 #include "Game/Util/LiveActorUtil.hpp"
 #include "Game/Util/MathUtil.hpp"
 #include "Game/Util/ObjUtil.hpp"
+#include <Karipon/Globals.hpp>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/Util/ByamlUtil.hpp>
 #endif
 
 namespace {
-#ifndef KRP_CORE
+#ifndef TARGET_KRP
     const static Vec cRotateOutermost = {20.0f, 45.0f, 0.0f};
     const static f32 cRadius[] = {4000.0f, 6200.0f, 8100.0f, 10300.0f, 12000.0f};
     const static f32 cRadiusLastDome[] = {4000.0f, 6700.0f, 9100.0f, 11800.0f};
@@ -31,7 +32,7 @@ namespace {
 }; // namespace
 
 AstroDomeOrbit::AstroDomeOrbit() : LiveActor("天文ドームの軌道"), mOrbitRadius(5000.0f), mAngle() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mSpeed = cGalaxyRotateSpeed;
     mColor = cColor;
     mBloomColor = cBloomColor;
@@ -53,11 +54,8 @@ void AstroDomeOrbit::draw() const {
         return;
     }
 
-#ifdef KRP_CORE
-    initDraw(mColor);
-#else
-    initDraw(::cColor);
-#endif
+
+    initDraw(TARGET_KRP_IF_ELSE(mColor, ::cColor));
 
     drawCelling(::cWidth, true, ::cHeight);
     drawCelling(::cWidth, false, ::cHeight);
@@ -71,11 +69,7 @@ void AstroDomeOrbit::drawBloom() const {
         return;
     }
 
-#ifdef KRP_CORE
-    initDraw(mBloomColor);
-#else
-    initDraw(::cBloomColor);
-#endif
+    initDraw(TARGET_KRP_IF_ELSE(mBloomColor, ::cBloomColor));
 
     drawCelling(::cBloomWidth, true, ::cBloomHeight);
     drawCelling(::cBloomWidth, false, ::cBloomHeight);
@@ -85,7 +79,7 @@ void AstroDomeOrbit::drawBloom() const {
 }
 
 void AstroDomeOrbit::setup(s32 radiusIdx) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mAngle = ::cGalaxyRotateCoordOffset * radiusIdx;
     krp::ByamlIter params = MiniatureGalaxyFunction::getMiniatureGalaxyOrbitParams(radiusIdx);
     krp::getByamlDataColor8(params["Color"], &mColor);
@@ -111,11 +105,7 @@ void AstroDomeOrbit::setup(s32 radiusIdx) {
 }
 
 void AstroDomeOrbit::moveCoord() {
-#ifdef KRP_CORE
-    mAngle = calcRepeatedRotateCoord(mSpeed + mAngle);
-#else
-    mAngle = calcRepeatedRotateCoord(::cGalaxyRotateSpeed + mAngle);
-#endif
+    mAngle = calcRepeatedRotateCoord(TARGET_KRP_IF_ELSE(mSpeed, ::cGalaxyRotateSpeed) + mAngle);
 }
 
 void AstroDomeOrbit::calcGalaxyPos(TVec3f* pPos) const {

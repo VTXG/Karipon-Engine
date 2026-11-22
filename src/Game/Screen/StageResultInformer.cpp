@@ -27,7 +27,7 @@ namespace {
     const char cMessageIdGetPictureBook[] = "System_Result005";
     const char cMessageIdUpdateBestScore[] = "System_Result006";
     const char cMessageIdTicoGalaxyAppear[] = "System_Result007";
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     const char cMessageIdTicoCoin[] = "System_Result010";
 #endif
     const char cNamePowerStarNum[] = "ShaStarNum";
@@ -54,7 +54,7 @@ namespace {
     NEW_NERVE(StageResultInformerDisplayGetStarPiece, StageResultInformer, DisplayGetStarPiece);
     NEW_NERVE(StageResultInformerWaitBeforeDisappearGetStarPiece, StageResultInformer, WaitBeforeDisappearGetStarPiece);
     NEW_NERVE(StageResultInformerDisappearGetStarPiece, StageResultInformer, DisappearGetStarPiece);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     NEW_NERVE(StageResultInformerShowTicoCoin, StageResultInformer, ShowTicoCoin);
 #endif
     NEW_NERVE(StageResultInformerShowNewGalaxyDiscover, StageResultInformer, ShowNewGalaxyDiscover);
@@ -336,7 +336,7 @@ void StageResultInformer::exeDisappearGetStarPiece() {
     }
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 void StageResultInformer::exeShowTicoCoin() {
     // TODO add some fancy ass layout that displays the comet medals and stuff
     GameSequenceFunction::reflectStageResultSequenceTicoCoin();
@@ -413,7 +413,7 @@ void StageResultInformer::decideNextNerve() {
     bool afterComplete = afterStar || isNerve(GET_NERVE_ANON(StageResultInformerShowGalaxyComplete));
     bool afterScore = afterComplete || isNerve(GET_NERVE_ANON(StageResultInformerDisappearUpdateBestScore));
     bool afterPiece = afterScore || isNerve(GET_NERVE_ANON(StageResultInformerDisappearGetStarPiece));
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool afterTicoCoin = afterScore || isNerve(GET_NERVE_ANON(StageResultInformerShowTicoCoin));
     bool afterMap = afterTicoCoin || isNerve(GET_NERVE_ANON(StageResultInformerShowGalaxyMap));
 #else
@@ -429,7 +429,7 @@ void StageResultInformer::decideNextNerve() {
         setNerve(GET_NERVE_ANON(StageResultInformerAppearGetStarPiece));
     } else if (afterPiece && mSequenceChecker->isJustOpenGalaxyWithoutChallengeGalaxy()) {
         setNerve(GET_NERVE_ANON(StageResultInformerShowNewGalaxyDiscover));
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     } else if (afterTicoCoin && GameSequenceFunction::isNeedToReflectStageResultSequenceTicoCoin()) {
         setNerve(GET_NERVE_ANON(StageResultInformerShowTicoCoin));
 #endif

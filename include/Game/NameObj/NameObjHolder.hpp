@@ -20,7 +20,7 @@ public:
     void clearArray();
     NameObj* find(const char* pName);
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     int getObjArraySize() const {
         return mObjArray.size();
     }

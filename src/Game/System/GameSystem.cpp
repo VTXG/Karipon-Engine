@@ -34,7 +34,7 @@
 #include <nw4r/lyt/init.h>
 #include <revolution.h>
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/System/SystemDataHolder.hpp>
 #endif
 
@@ -101,7 +101,7 @@ void GameSystem::init() {
     mHomeButtonStateNotifier = new HomeButtonStateNotifier();
     mDimmingWatcher = new GameSystemDimmingWatcher();
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder::initInstance();
 #endif
 
@@ -174,7 +174,7 @@ void GameSystem::initGX() {
 }
 
 void GameSystem::initAfterStationedResourceLoaded() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     krp::SystemDataHolder::getInstance()->init();
 #endif
     mFontHolder->createFontFromFile();

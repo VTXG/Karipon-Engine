@@ -17,7 +17,7 @@ class ScreenPreserver;
 class StarPointerDirector;
 class WPadHolder;
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 namespace krp {
     class DebugPrint;
     class OnlineManager;
@@ -38,7 +38,7 @@ public:
     void clearRequestFileInfo(bool);
     void drawStarPointer();
     void drawBeforeEndRender();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     void drawAfterHomeMenu();
 #endif
     void captureIfAllowForScreenPreserver();
@@ -54,7 +54,7 @@ public:
     void initWPad();
     void initStarPointerDirector();
     void initDisplay();
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     void initNetwork();
 #endif
 
@@ -73,7 +73,7 @@ public:
     /* 0x30 */ StarPointerDirector* mStarPointerDirector;
     /* 0x34 */ JMath::TRandom_fast_ mRandom;
     /* 0x38 */ u32 mLanguage;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     /* 0x3C */ krp::OnlineManager* mOnlineManager;
     /* 0x40 */ krp::DebugPrint* mDebugPrint;
 #endif

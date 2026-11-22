@@ -1,13 +1,10 @@
 #include "Karipon/Tools/GhostPacketSyncData.hpp"
-#include "Game/Util/MathUtil.hpp"
-#include "JSystem/JGeometry/TMatrix.hpp"
-#include "JSystem/JGeometry/TVec.hpp"
-#include "math_types.hpp"
 #include <Game/Animation/XanimePlayer.hpp>
 #include <Game/LiveActor/ModelManager.hpp>
 #include <Game/Player/MarioAccess.hpp>
 #include <Game/Player/MarioActor.hpp>
 #include <Game/Util/HashUtil.hpp>
+#include <Game/Util/MathUtil.hpp>
 #include <Game/Util/MtxUtil.hpp>
 
 namespace {

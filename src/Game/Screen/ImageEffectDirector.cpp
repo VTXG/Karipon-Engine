@@ -13,7 +13,7 @@
 #include "Game/Screen/ImageEffectState.hpp"
 #include "Game/Util.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/AreaObj/PostFogArea.hpp>
 #endif
 
@@ -27,7 +27,7 @@ ImageEffectDirector::ImageEffectDirector(const char* pName)
       mStateNull(new ImageEffectStateImpl::StateNull(this)), mStateBloomNormal(new ImageEffectStateImpl::StateBloomNormal(this)),
       mStateBloomSimple(new ImageEffectStateImpl::StateBloomSimple(this)), mStateScreenBlur(new ImageEffectStateImpl::StateScreenBlur(this)),
       mStateDepthOfField(new ImageEffectStateImpl::StateDepthOfField(this)), mState(mStateNull), mCurrentEffect() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mStatePostFog = new krp::StatePostFog(this);
 #endif
     MR::connectToSceneImageEffectMovement(this);
@@ -202,7 +202,7 @@ void ImageEffectDirector::setDepthOfFieldParams(ImageEffectArea* pArea) {
     mStateDepthOfField->setBlurMinDist(pDepthOfFieldArea->getBlurMinDist());
 }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 void ImageEffectDirector::setPostFogParams(ImageEffectArea* pArea) {
     krp::PostFogArea* postFogArea = static_cast< krp::PostFogArea* >(pArea);
     mStatePostFog->setProperties(postFogArea);
@@ -289,7 +289,7 @@ void ImageEffectDirector::updateAuto() {
         setDepthOfFieldParams(pEffectArea);
         setState(mStateDepthOfField);
         break;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     case ImageEffectArea::IMAGE_EFFECT_TYPE_POST_FOG:
         setPostFogParams(pEffectArea);
         setState(mStatePostFog);

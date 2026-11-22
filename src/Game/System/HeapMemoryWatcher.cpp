@@ -69,7 +69,7 @@ JKRHeap* HeapMemoryWatcher::getHeapGDDR3(const JKRHeap* pHeap) {
 
 void HeapMemoryWatcher::createFileCacheHeapOnGameHeap(u32 size) {
     mFileCacheHeap = ::createSolidHeap(size, mGameHeapGDDR);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mFileCacheHeap->setName("FileCacheHeap");
 #endif
 }
@@ -77,7 +77,7 @@ void HeapMemoryWatcher::createFileCacheHeapOnGameHeap(u32 size) {
 void HeapMemoryWatcher::createSceneHeapOnGameHeap() {
     mSceneHeapNapa = ::createSolidHeap(-1, mGameHeapNapa);
     mSceneHeapGDDR = ::createSolidHeap(-1, mGameHeapGDDR);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mSceneHeapNapa->setName("SceneHeapNapa");
     mSceneHeapGDDR->setName("SceneHeapGDDR");
 #endif
@@ -129,7 +129,7 @@ void HeapMemoryWatcher::createRootHeap() {
     u32 arenaHi, arenaLo;
 
     JKRExpHeap::createRoot(1, true);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     JKRHeap::sRootHeap->setName("RootHeap");
 #endif
 
@@ -145,7 +145,7 @@ void HeapMemoryWatcher::createRootHeap() {
     }
 
     HeapMemoryWatcher::sRootHeapGDDR3 = pHeap;
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     HeapMemoryWatcher::sRootHeapGDDR3->setName("RootHeapGDDR");
 #endif
 }
@@ -161,7 +161,7 @@ void HeapMemoryWatcher::createHeaps() {
     mHomeButtonLayoutHeap = ::createExpHeap(0x80000, HeapMemoryWatcher::sRootHeapGDDR3, false);
     mStationedHeapGDDR = ::createExpHeap(0x1400000, HeapMemoryWatcher::sRootHeapGDDR3, false);
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     JKRHeap::sSystemHeap->setName("SystemHeap");
     mAudSystemHeap->setName("AudSystemHeap");
     mStationedHeapNapa->setName("StationedHeapNapa");
@@ -178,7 +178,7 @@ void HeapMemoryWatcher::createGameHeap() {
     mGameHeapNapa = ::createExpHeap(-1, JKRHeap::sRootHeap, false);
     mGameHeapGDDR = ::createExpHeap(-1, HeapMemoryWatcher::sRootHeapGDDR3, false);
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mGameHeapNapa->setName("GameHeapNapa");
     mGameHeapGDDR->setName("GameHeapGDDR");
 #endif
@@ -192,7 +192,7 @@ HeapMemoryWatcher::HeapMemoryWatcher()
 }
 
 void HeapMemoryWatcher::memoryErrorCallback(void* pHeapAddr, u32 size, int alignment) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     JKRHeap* heap = static_cast< JKRHeap* >(pHeapAddr);
     const char* heapName;
 

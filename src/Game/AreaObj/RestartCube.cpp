@@ -13,7 +13,7 @@
 #include "Game/Util/SystemUtil.hpp"
 
 RestartCube::RestartCube(int formType, const char* pName) : AreaObj(formType, pName), mIdInfo(), _40(-1), _44(-1), _48() {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     mIsUsed = false;
 #endif
 }
@@ -25,12 +25,14 @@ void RestartCube::init(const JMapInfoIter& rIter) {
     _40 = mObjArg1;
     _44 = mObjArg2;
     _48 = false;
+#ifdef TARGET_KRP
     mIsUsed = false;
+#endif
 }
 
 void RestartCube::updatePlayerRestartIdInfo() {
     if (mObjArg3 == -1 || MR::isOnGroundPlayer()) {
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
         if (!mIsUsed) {
             mIsUsed = true;
             GameSequenceFunction::saveTemporaryTicoCoin();

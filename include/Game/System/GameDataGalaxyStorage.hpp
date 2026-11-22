@@ -2,6 +2,7 @@
 
 #include "Game/System/BinaryDataChunkHolder.hpp"
 #include "Game/Util/Array.hpp"
+#include <Karipon/Globals.hpp>
 
 class BinaryDataContentAccessor;
 class BinaryDataContentHeaderSerializer;
@@ -24,7 +25,7 @@ public:
         return (mAlreadyVisitedFlags & (1 << scenarioNo)) != 0;
     }
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     bool isTicoCoinCollected(s32 id) const {
         u8 mask = (1 << id) & 0xFF;
         return (mTicoCoinFlag & mask) != 0;
@@ -43,11 +44,7 @@ public:
     /* 0x04 */ s32 mPowerStarNum;
     /* 0x08 */ u8 mPowerStarOwnedFlags;
     /* 0x09 */ u8 mAlreadyVisitedFlags;
-#ifdef KRP_CORE
-    /* 0x0A */ u8 mTicoCoinFlag;
-#else
-    /* 0x0A */ u8 _A;
-#endif
+    /* 0x0A */ u8 TARGET_KRP_IF_ELSE(mTicoCoinFlag, _A);
     /* 0x0B */ u8 _B;
     /* 0x0C */ u16 mMaxCoinNum[8];
 };
@@ -64,7 +61,7 @@ public:
     void setFlagAlreadyVisited(bool);
     void updateMaxCoinNum(int);
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     u8 getTicoCoinFlag() const;
     void updateTicoCoinFlag(u8 flag);
 #endif
@@ -99,7 +96,7 @@ public:
     s32 getPowerStarNumOwned(const char*) const;
     s32 getGalaxyNum() const;
     GameDataSomeGalaxyStorage* getGalaxyStorage(int);
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     GameDataSomeGalaxyStorage* getGalaxyStorage(const char*);
 #endif
     void initHeaderSerializer();

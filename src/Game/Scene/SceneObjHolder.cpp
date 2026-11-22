@@ -119,7 +119,7 @@
 #include "Game/Util/ShareUtil.hpp"
 #include "Game/Util/SingletonHolder.hpp"
 
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
 #include <Karipon/Map/ProductMapCreator.hpp>
 #include <Karipon/Screen/PostFog.hpp>
 #endif
@@ -391,7 +391,7 @@ NameObj* SceneObjHolder::newEachObj(int id) {
         return new PrologueHolder("プロローグ保持");
     case SceneObj_StaffRoll:
         return new StaffRoll("スタッフロール");
-#ifdef KRP_CORE
+#ifdef TARGET_KRP
     case SceneObj_ProductMapCreator:
         return new krp::ProductMapCreator();
     case SceneObj_PostFog:
