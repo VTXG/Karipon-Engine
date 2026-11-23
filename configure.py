@@ -806,6 +806,7 @@ config.libs = [
     KariponLib(
         "MapObj",
         [
+            Object(MatchingFor(), "Karipon/MapObj/SpikeStick.cpp"),
             Object(MatchingFor(), "Karipon/MapObj/TicoCoin.cpp"),
         ]
     ),

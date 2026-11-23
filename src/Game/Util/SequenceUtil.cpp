@@ -63,10 +63,7 @@ void MR::requestChangeSceneAfterGameOver() {
 }
 
 void MR::requestChangeSceneAfterBoot() {
-    // requestChangeSceneTitle();
-
-    GameDataFunction::makeGameDataComplete();
-    requestChangeStageInGameAfterLoadingGameData();
+    requestChangeSceneTitle();
 }
 
 void MR::requestChangeStageGoBackAstroDome() {

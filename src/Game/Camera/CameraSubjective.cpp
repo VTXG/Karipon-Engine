@@ -75,7 +75,9 @@ CameraTargetObj* CameraSubjective::calc() {
     accel.y -= stick.y;
 
     mAngle.x = MR::clamp(mAngle.x + mAngleVel.x * ::sRotSpeedEff, -45.0f, ::sRotYMax);
-#ifndef TARGET_KRP
+#ifdef TARGET_KRP
+    mAngle.y = mAngle.y + mAngleVel.y * ::sRotSpeedEff;
+#else
     mAngle.y = MR::clamp(mAngle.y + mAngleVel.y * ::sRotSpeedEff, -::sRotXMax, ::sRotXMax);
 #endif
 

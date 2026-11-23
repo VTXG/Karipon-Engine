@@ -20,6 +20,7 @@
 #ifdef TARGET_KRP
 #include <Karipon/AreaObj/PostFogArea.hpp>
 #include <Karipon/Map/ProductMapCreator.hpp>
+#include <Karipon/MapObj/SpikeStick.hpp>
 #include <Karipon/MapObj/TicoCoin.hpp>
 #include <Karipon/Tools/GhostPlayerRecordHelper.hpp>
 #endif
@@ -5980,6 +5981,11 @@ namespace {
         {
             "GhostPlayerRecordHelper",
             createNameObj< gst::GhostPlayerRecordHelper >,
+            nullptr,
+        },
+        {
+            "SpikeStick",
+            createNameObj< krp::SpikeStick >,
             nullptr,
         },
 #endif
