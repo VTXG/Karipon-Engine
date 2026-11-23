@@ -3,10 +3,16 @@
 #include "Game/GameAudio/AudStageBgmWrap.hpp"
 #include "Game/Util/StringUtil.hpp"
 #include <JSystem/JAudio2/JAISound.hpp>
+#include <Karipon/Globals.hpp>
+
+#ifdef TARGET_KRP
+#include <Karipon/AudioLib/AudDataHolder.hpp>
+#endif
 
 // TODO: bgm state enum
 
 namespace {
+#ifndef TARGET_KRP
     struct StageBgm {
         /* 0x00 */ const char* mStageName;
         /* 0x04 */ u32 mBgmIDs[6];
@@ -120,27 +126,38 @@ namespace {
         }
         return nullptr;
     }
+#endif
 };  // namespace
 
 u32 AudStageBgmTable::getBgmId(const char* pStageName, s32 bgmNo) {
-    JAISoundID cometBgm = AudStageBgmWrap::getCometEventBgm(pStageName);
-    if (cometBgm != -1) {
-        return cometBgm;
+    IF_TARGET_KRP_COND(!krp::AudDataHolder::getInstance()->isPriorityBgm(pStageName)) {
+        JAISoundID cometBgm = AudStageBgmWrap::getCometEventBgm(pStageName);
+        if (cometBgm != -1) {
+            return cometBgm;
+        }
     }
 
+#ifdef TARGET_KRP
+    return krp::AudDataHolder::getInstance()->getChangeBgmId(pStageName, bgmNo);
+#else
     const StageBgm* bgm = ::findDataElement(pStageName);
     if (bgm != nullptr) {
         return bgm->mBgmIDs[bgmNo];
     }
 
     return 0;
+#endif
 }
 
 u32 AudStageBgmTable::getBgmState(const char* pStageName, s32 stateNo) {
+#ifdef TARGET_KRP
+    return krp::AudDataHolder::getInstance()->getChangeBgmState(pStageName, stateNo);
+#else
     const StageBgm* bgm = ::findDataElement(pStageName);
     if (bgm != nullptr) {
         return bgm->mBgmStates[stateNo];
     }
 
     return 0;
+#endif
 }

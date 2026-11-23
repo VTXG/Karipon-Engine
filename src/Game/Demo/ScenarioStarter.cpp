@@ -24,6 +24,10 @@
 #include "Game/Util/SequenceUtil.hpp"
 #include "Game/Util/SoundUtil.hpp"
 
+#ifdef TARGET_KRP
+#include <Karipon/AudioLib/AudDataHolder.hpp>
+#endif
+
 void ScenarioStarter_FORCE_MATCH_SDATA2() {
     (void)1.0f;
     (void)0.0f;
@@ -136,6 +140,9 @@ void ScenarioStarter::exeRailMove() {
         return;
     }
 
+#ifdef TARGET_KRP
+    s32 bgmStartTime = krp::AudDataHolder::getInstance()->getBgmStartTime(MR::getCurrentStageName(), MR::getCurrentScenarioNo());
+#else
     s32 bgmStartTime = 0;
     if (MR::isEqualStageName("EggStarGalaxy")) {
         bgmStartTime = 20;
@@ -144,6 +151,7 @@ void ScenarioStarter::exeRailMove() {
     } else if (MR::isEqualStageName("FactoryGalaxy")) {
         bgmStartTime = 11;
     }
+#endif
 
     if (MR::isStep(this, mFlightTime - bgmStartTime) && isStartBgmOnWelcome()) {
         MR::stopStageBGM(0);
@@ -344,6 +352,9 @@ bool ScenarioStarter::isStartBgmOnWelcome() {
         return false;
     }
 
+#ifdef TARGET_KRP
+    return krp::AudDataHolder::getInstance()->isStartBgmOnWelcome(MR::getCurrentStageName(), MR::getCurrentScenarioNo());
+#else
     if (MR::isEqualStageName("EggStarGalaxy") && MR::getCurrentScenarioNo() == 1) {
         return true;
     }
@@ -357,6 +368,7 @@ bool ScenarioStarter::isStartBgmOnWelcome() {
     }
 
     return false;
+#endif
 }
 
 void ScenarioStarter::exeWaitScenarioCameraEnd() {

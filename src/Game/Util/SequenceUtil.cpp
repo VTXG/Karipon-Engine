@@ -33,11 +33,13 @@ void MR::requestChangeStageAfterStageClear() {
 void MR::requestChangeStageAfterMiss() {
     JMapIdInfo info = *getPlayerRestartIdInfo();
 
+#ifndef TARGET_KRP
     if (isGalaxyAnyCometAppearInCurrentStage()) {
         const JMapIdInfo& rInitialInfo = getInitializeStartIdInfo();
         info.mID = rInitialInfo.mID;
         info.mZoneID = rInitialInfo.mZoneID;
     }
+#endif
 
     GameSystemSceneController* pSceneController = SingletonHolder< GameSystem >::get()->mSceneController;
     GalaxyMoveArgument argument(GALAXY_MOVE_AFTER_MISS, pSceneController->mCurrSceneControlInfo.mStage, pSceneController->getCurrentScenarioNo(),

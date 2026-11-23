@@ -6,11 +6,13 @@
 #include "Game/System/GameDataTemporaryInGalaxy.hpp"
 #include "Game/System/GameSequenceFunction.hpp"
 #include "Game/Util/DemoUtil.hpp"
+#include "Game/Util/EventUtil.hpp"
 #include "Game/Util/JMapIdInfo.hpp"
 #include "Game/Util/PlayerUtil.hpp"
 #include "Game/Util/SceneUtil.hpp"
 #include "Game/Util/SoundUtil.hpp"
 #include "Game/Util/SystemUtil.hpp"
+#include <Karipon/Globals.hpp>
 
 RestartCube::RestartCube(int formType, const char* pName) : AreaObj(formType, pName), mIdInfo(), _40(-1), _44(-1), _48() {
 #ifdef TARGET_KRP
@@ -33,13 +35,15 @@ void RestartCube::init(const JMapInfoIter& rIter) {
 void RestartCube::updatePlayerRestartIdInfo() {
     if (mObjArg3 == -1 || MR::isOnGroundPlayer()) {
 #ifdef TARGET_KRP
-        if (!mIsUsed) {
-            mIsUsed = true;
-            GameSequenceFunction::saveTemporaryTicoCoin();
+        if (mObjArg4 == 1 || !MR::isGalaxyAnyCometAppearInCurrentStage()) {
+            if (!mIsUsed) {
+                mIsUsed = true;
+                GameSequenceFunction::saveTemporaryTicoCoin();
+            }
+
+            MR::setPlayerRestartIdInfo(*mIdInfo);
         }
 #endif
-
-        MR::setPlayerRestartIdInfo(*mIdInfo);
 
         if (!_48 && !MR::isCubeBgmChangeInvalid() && _40 >= 0) {
             changeBgm();
@@ -47,8 +51,7 @@ void RestartCube::updatePlayerRestartIdInfo() {
     }
 }
 
-RestartCube::~RestartCube() {
-}
+RestartCube::~RestartCube() {}
 
 void RestartCube::changeBgm() {
     if (MR::isPowerStarGetDemoActive()) {

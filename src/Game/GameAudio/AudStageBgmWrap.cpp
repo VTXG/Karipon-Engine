@@ -3,7 +3,13 @@
 #include "Game/Util/EventUtil.hpp"
 #include "Game/Util/StringUtil.hpp"
 #include <JSystem/JAudio2/JAISound.hpp>
+#include <Karipon/Globals.hpp>
 
+#ifdef TARGET_KRP
+#include <Karipon/AudioLib/AudDataHolder.hpp>
+#endif
+
+#ifndef TARGET_KRP
 struct StageBgmData {
     /* 0x00 */ const char* mSceneName;
     /* 0x04 */ const char* mStageName;
@@ -109,23 +115,30 @@ const u32 sMASenarioBgmData[][6] = {
 inline JAISoundID getScenarioBgmData(int index, int scenarioNo) {
     return sMASenarioBgmData[index][scenarioNo];
 }
+#endif
 
 JAISoundID AudStageBgmWrap::changeStageNameToSoundID(const char* pSceneName, const char* pStageName, s32 scenarioNo) {
     JAISoundID soundID = -1;
-    JAISoundID koopaAppearBgm = getKoopaFortressAppearBgm(pStageName);
-    if (koopaAppearBgm != -1) {
-        return (u32)koopaAppearBgm;  // TODO: ?
+
+    IF_TARGET_KRP_COND(!krp::AudDataHolder::getInstance()->isPriorityBgm(pStageName)) {
+        JAISoundID koopaAppearBgm = getKoopaFortressAppearBgm(pStageName);
+        if (koopaAppearBgm != -1) {
+            return (u32)koopaAppearBgm; // TODO: ?
+        }
+
+        JAISoundID cometEventBgm = getCometEventBgm(pStageName);
+        if (cometEventBgm != -1) {
+            return (u32)cometEventBgm; // TODO: ?
+        }
+
+        if (MR::isEqualString(pStageName, "AstroGalaxy") && scenarioNo == 1 && !MR::isOnGameEventFlagAstroGalaxyBgmBright()) {
+            return MBGM_GALAXY_24;
+        }
     }
 
-    JAISoundID cometEventBgm = getCometEventBgm(pStageName);
-    if (cometEventBgm != -1) {
-        return (u32)cometEventBgm;  // TODO: ?
-    }
-
-    if (MR::isEqualString(pStageName, "AstroGalaxy") && scenarioNo == 1 && !MR::isOnGameEventFlagAstroGalaxyBgmBright()) {
-        return MBGM_GALAXY_24;
-    }
-
+#ifdef TARGET_KRP
+    soundID = krp::AudDataHolder::getInstance()->getBgmId(pStageName, scenarioNo);
+#else
     u32 idx = 0;
     while (sMAStageBgmData[idx].mStageName != nullptr) {
         if (MR::strcasecmp(sMAStageBgmData[idx].mSceneName, pSceneName) == 0 && MR::strcasecmp(sMAStageBgmData[idx].mStageName, pStageName) == 0) {
@@ -138,6 +151,7 @@ JAISoundID AudStageBgmWrap::changeStageNameToSoundID(const char* pSceneName, con
         }
         idx++;
     }
+#endif
     return soundID;
 }
 
