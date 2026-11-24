@@ -1,9 +1,10 @@
 #include "Game/Util/BitArray.hpp"
 #include "Game/Util/MemoryUtil.hpp"
+#include <Karipon/Globals.hpp>
 
 namespace MR {
     BitArray::BitArray(int bitNum) : mArray(nullptr), mArraySize(bitNum) {
-        int byteNum = (bitNum + 7 & ~7) / 8;
+        int byteNum = TARGET_KRP_IF_ELSE(sizeU8(), (bitNum + 7 & ~7) / 8);
 
         mArray = new u8[byteNum];
 

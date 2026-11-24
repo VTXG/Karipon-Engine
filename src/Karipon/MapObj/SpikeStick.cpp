@@ -27,11 +27,11 @@ namespace {
     const f32 sCoordMoveStart = 0.05f;
     const f32 sHomeDistance = 2000.0f;
 
-    NEW_NERVE(NrvSpikeStickWait, krp::SpikeStick, Wait);
-    NEW_NERVE(NrvSpikeStickMoveStart, krp::SpikeStick, MoveStart);
-    NEW_NERVE(NrvSpikeStickMove, krp::SpikeStick, Move);
-    NEW_NERVE(NrvSpikeStickMoveEnd, krp::SpikeStick, MoveEnd);
-    NEW_NERVE(NrvSpikeStickMoveBack, krp::SpikeStick, MoveBack);
+    NEW_NERVE(SpikeStickNrvWait, krp::SpikeStick, Wait);
+    NEW_NERVE(SpikeStickNrvMoveStart, krp::SpikeStick, MoveStart);
+    NEW_NERVE(SpikeStickNrvMove, krp::SpikeStick, Move);
+    NEW_NERVE(SpikeStickNrvMoveEnd, krp::SpikeStick, MoveEnd);
+    NEW_NERVE(SpikeStickNrvMoveBack, krp::SpikeStick, MoveBack);
 }; // namespace
 
 namespace krp {
@@ -63,7 +63,7 @@ namespace krp {
         mStopPosition = mPosition;
 
         initSound(4, false);
-        initNerve(GET_NERVE_ANON(NrvSpikeStickWait));
+        initNerve(GET_NERVE_ANON(SpikeStickNrvWait));
         makeActorAppeared();
     }
 
@@ -115,7 +115,7 @@ namespace krp {
         }
 
         if (MR::isStep(this, mStepWait)) {
-            setNerve(GET_NERVE_ANON(NrvSpikeStickMoveStart));
+            setNerve(GET_NERVE_ANON(SpikeStickNrvMoveStart));
         }
     }
 
@@ -131,7 +131,7 @@ namespace krp {
         }
 
         if (MR::isStep(this, mStepMoveWait)) {
-            setNerve(GET_NERVE_ANON(NrvSpikeStickMove));
+            setNerve(GET_NERVE_ANON(SpikeStickNrvMove));
         }
     }
 
@@ -139,7 +139,7 @@ namespace krp {
         updateMove(mStepMove, ::sCoordMoveStart, 1.0f, MovementEasing_In);
 
         if (MR::isStep(this, mStepMove)) {
-            setNerve(GET_NERVE_ANON(NrvSpikeStickMoveEnd));
+            setNerve(GET_NERVE_ANON(SpikeStickNrvMoveEnd));
         }
     }
 
@@ -150,7 +150,7 @@ namespace krp {
         }
 
         if (MR::isStep(this, mStepMoveWait)) {
-            setNerve(GET_NERVE_ANON(NrvSpikeStickMoveBack));
+            setNerve(GET_NERVE_ANON(SpikeStickNrvMoveBack));
         }
     }
 
@@ -159,7 +159,7 @@ namespace krp {
 
         if (MR::isStep(this, mStepMoveBack)) {
             // MR::shakeCameraVeryWeak();
-            setNerve(GET_NERVE_ANON(NrvSpikeStickWait));
+            setNerve(GET_NERVE_ANON(SpikeStickNrvWait));
         }
     }
 }; // namespace krp

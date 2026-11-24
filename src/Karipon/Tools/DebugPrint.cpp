@@ -9,13 +9,11 @@
 #include <Game/System/WPadButton.hpp>
 #include <Game/System/WPadHolder.hpp>
 #include <Game/Util/DirectDraw.hpp>
+#include <Game/Util/GamePadUtil.hpp>
 #include <Game/Util/ScreenUtil.hpp>
 #include <Game/Util/SingletonHolder.hpp>
 #include <Game/Util/SystemUtil.hpp>
-#include <JSystem/JKernel/JKRExpHeap.hpp>
 #include <JSystem/JKernel/JKRHeap.hpp>
-#include <JSystem/JKernel/JKRSolidHeap.hpp>
-#include <JSystem/JKernel/JKRUnitHeap.hpp>
 #include <wstring.h>
 
 extern "C" int vswprintf(wchar_t* s, size_t n, const wchar_t* format, va_list arg);
@@ -113,10 +111,6 @@ namespace {
         return num;
     }
 }; // namespace
-
-namespace MR {
-    bool testCorePadTrigger2(s32 channel);
-};
 
 namespace krp {
     DebugPrint::Context::Context(DebugPrint* pLayout) : mLayout(pLayout), mWriter(), mDrawRect() {

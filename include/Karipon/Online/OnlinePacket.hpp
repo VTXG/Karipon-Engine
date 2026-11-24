@@ -22,6 +22,9 @@ namespace krp {
     class OnlinePacketStream {
     public:
         OnlinePacketStream();
+        OnlinePacketStream(u8* pData, u32 size, u32 capacity) {
+            attach(pData, size, capacity);
+        }
 
         void attach(u8* pData, u32 size, u32 capacity);
         void read(void* pBuffer, u32 size);

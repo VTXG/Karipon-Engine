@@ -63,7 +63,12 @@ void MR::requestChangeSceneAfterGameOver() {
 }
 
 void MR::requestChangeSceneAfterBoot() {
-    requestChangeSceneTitle();
+    // requestChangeSceneTitle();
+
+    GameDataFunction::makeGameDataComplete();
+    MR::addStockedStarPiece(9999);
+    // requestChangeStageInGameMoving("AstroMap", 1);
+    requestChangeStageInGameAfterLoadingGameData();
 }
 
 void MR::requestChangeStageGoBackAstroDome() {

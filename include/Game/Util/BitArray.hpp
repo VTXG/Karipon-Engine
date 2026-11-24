@@ -26,6 +26,12 @@ namespace MR {
             return mArraySize;
         }
 
+#ifdef TARGET_KRP
+        int sizeU8() const {
+            return (mArraySize + 7 & ~7) / 8;
+        }
+#endif
+
     private:
         /// @brief The pointer to the array of bytes.
         /* 0x0 */ u8* mArray;

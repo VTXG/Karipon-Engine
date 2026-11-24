@@ -9,14 +9,10 @@
 #include <Game/Util/PlayerUtil.hpp>
 #include <Game/Util/SceneUtil.hpp>
 
-namespace MR {
-    bool testCorePadTrigger2(s32 channel);
-};
-
 namespace {
-    NEW_NERVE(NrvGstRecordHelperWait, gst::GstRecordHelper, Wait);
-    NEW_NERVE(NrvGstRecordHelperPreparing, gst::GstRecordHelper, Preparing);
-    NEW_NERVE(NrvGstRecordHelperRecording, gst::GstRecordHelper, Recording);
+    NEW_NERVE(GstRecordHelperNrvWait, gst::GstRecordHelper, Wait);
+    NEW_NERVE(GstRecordHelperNrvPreparing, gst::GstRecordHelper, Preparing);
+    NEW_NERVE(GstRecordHelperNrvRecording, gst::GstRecordHelper, Recording);
 }; // namespace
 
 namespace gst {
@@ -35,7 +31,7 @@ namespace gst {
         mIconAButton = new IconAButton(true, false);
         mIconAButton->initWithoutIter();
 
-        initNerve(GET_NERVE_ANON(NrvGstRecordHelperWait));
+        initNerve(GET_NERVE_ANON(GstRecordHelperNrvWait));
 
         s32 stateNum = getStateCount();
         if (stateNum > 0) {
@@ -66,7 +62,7 @@ namespace gst {
     }
 
     void GstRecordHelper::attackSensor(HitSensor* pSender, HitSensor* pReceiver) {
-        if (isNerve(GET_NERVE_ANON(NrvGstRecordHelperWait))) {
+        if (isNerve(GET_NERVE_ANON(GstRecordHelperNrvWait))) {
             if (MR::isSensorPlayer(pReceiver) && MR::isOnGroundPlayer()) {
                 mShowIconAButton = true;
             }
@@ -93,7 +89,7 @@ namespace gst {
         }
 
         if (mShowIconAButton && mIconAButton->isOpen() && MR::testCorePadTriggerA(0)) {
-            setNerve(GET_NERVE_ANON(NrvGstRecordHelperPreparing));
+            setNerve(GET_NERVE_ANON(GstRecordHelperNrvPreparing));
         }
     }
 
@@ -109,7 +105,7 @@ namespace gst {
         }
 
         if (MR::isStep(this, 60)) {
-            setNerve(GET_NERVE_ANON(NrvGstRecordHelperRecording));
+            setNerve(GET_NERVE_ANON(GstRecordHelperNrvRecording));
         }
     }
 
