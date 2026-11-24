@@ -17,6 +17,10 @@
 #include "Game/Util/StringUtil.hpp"
 #include <algorithm>
 
+#ifdef TARGET_KRP
+#include <Karipon/System/SystemDataHolder.hpp>
+#endif
+
 // FIXME: String "Record" is out of order in .data, yet function order matches in retail and debug
 
 namespace {
@@ -25,6 +29,11 @@ namespace {
 };  // namespace
 
 namespace {
+#ifdef TARGET_KRP
+    const krp::RaceData& getRaceStruceData(s32 id) {
+        return krp::SystemDataHolder::getInstance()->getRaceData(id);
+    }
+#else
     struct RaceStructData {
         s32 getMaxTime() const {
             return mMaxTime;
@@ -49,6 +58,7 @@ namespace {
     const RaceStructData& getRaceStruceData(s32 id) {
         return ::sRaceStruct[id];
     }
+#endif
 
     RaceManager* getRaceManager() {
         return MR::getSceneObj< RaceManager >(SceneObj_RaceManager);
@@ -298,7 +308,11 @@ void RaceManager::exeCount() {
     }
 
     if (MR::isStep(this, ::sBgmStartStep)) {
+#ifdef TARGET_KRP
+        MR::startStageBGM(::getRaceStruceData(mCurrentRace).mBgmIdName, false);
+#else
         MR::startEventBGM(::getRaceStruceData(mCurrentRace).mEventBgmId);
+#endif
     }
 
     if (mLayout->isPlayCountAnim()) {
@@ -557,6 +571,9 @@ namespace RaceManagerFunction {
     }
 
     s32 getRaceId(const char* pGalaxyName, s32 scenarioNo) {
+#ifdef TARGET_KRP
+        return krp::SystemDataHolder::getInstance()->getRaceId(pGalaxyName, scenarioNo);
+#else
         for (u32 i = 0; i < ARRAY_SIZE(::sRaceStruct); i++) {
             const RaceStructData& rRaceStructData = ::getRaceStruceData(i);
 
@@ -566,6 +583,7 @@ namespace RaceManagerFunction {
         }
 
         return -1;
+#endif
     }
 
     bool hasPowerStarRaceScenario(int index) {

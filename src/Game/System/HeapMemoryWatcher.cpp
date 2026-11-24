@@ -5,6 +5,10 @@
 #include <revolution/os.h>
 #include <revolution/wpad.h>
 
+#ifdef TARGET_KRP
+#include <Karipon/Util/MemoryUtil.hpp>
+#endif
+
 JKRExpHeap* HeapMemoryWatcher::sRootHeapGDDR3;
 
 namespace {
@@ -193,17 +197,7 @@ HeapMemoryWatcher::HeapMemoryWatcher()
 
 void HeapMemoryWatcher::memoryErrorCallback(void* pHeapAddr, u32 size, int alignment) {
 #ifdef TARGET_KRP
-    JKRHeap* heap = static_cast< JKRHeap* >(pHeapAddr);
-    const char* heapName;
-
-    if (heap != nullptr && heap->mName != nullptr) {
-        heapName = heap->mName;
-    }
-    else {
-        heapName = "Unnamed";
-    }
-
-    OSPanic(__FILE__, __LINE__, "Failed to allocate memory in heap '%s' (size=%d, align=%d)", heapName, size, alignment);
+    krp::memoryErrorCallback(static_cast< const JKRHeap* >(pHeapAddr), size, alignment);
 #else
     OSPanic(__FILE__, 537, "");
 #endif

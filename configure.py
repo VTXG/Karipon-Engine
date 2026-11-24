@@ -849,6 +849,7 @@ config.libs = [
             Object(MatchingFor(), "Karipon/Util/ByamlHeader.cpp"),
             Object(MatchingFor(), "Karipon/Util/ByamlIter.cpp"),
             Object(MatchingFor(), "Karipon/Util/ByamlUtil.cpp"),
+            Object(MatchingFor(), "Karipon/Util/MemoryUtil.cpp"),
         ]
     ),
     GameLib(

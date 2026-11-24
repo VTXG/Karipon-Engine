@@ -65,6 +65,10 @@ namespace krp {
         ::attachResource(mArchive, mStoryEventTable, "GameStoryEventTable.bcsv");
         ::attachResource(mArchive, mStageParamTable, "StageParamTable.byaml");
         ::attachResource(mArchive, mDomeParamTable, "DomeParamTable.byaml");
+
+        JMapInfo raceDataTable;
+        ::attachResource(mArchive, raceDataTable, "RaceDataTable.bcsv");
+        initRaceDataTable(&raceDataTable);
     }
 
     void SystemDataHolder::initCometTable() {
@@ -159,7 +163,7 @@ namespace krp {
             GameEventValue& eventValue = mEventValueTable[i];
             s32 defaultValue = 0;
 
-            MR::getCsvDataStrOrNULL(&eventValue.mName, pInfo, "Name", i);
+            MR::getCsvDataStr(&eventValue.mName, pInfo, "Name", i);
             MR::getCsvDataS32(&defaultValue, pInfo, "DefaultValue", i);
 
             eventValue.mDefaultValue = defaultValue & 0xFFFF;
@@ -170,11 +174,32 @@ namespace krp {
         }
     }
 
-    JMapInfoIter SystemDataHolder::getGalaxyInfo(const char* pName) {
+    void SystemDataHolder::initRaceDataTable(const JMapInfo* pInfo) {
+        s32 entryNum = pInfo->getNumEntries();
+        mRaceDataTable.init(entryNum);
+
+        for (s32 i = 0; i < entryNum; i++) {
+            RaceData& raceData = mRaceDataTable[i];
+
+            MR::getCsvDataStr(&raceData.mName, pInfo, "Name", i);
+            MR::getCsvDataStrOrNULL(&raceData.mBgmIdName, pInfo, "BgmIdName", i);
+            MR::getCsvDataS32(&raceData.mMaxTime, pInfo, "MaxTime", i);
+            MR::getCsvDataStr(&raceData.mMessageId, pInfo, "MessageId", i);
+            MR::getCsvDataStr(&raceData.mGalaxyName, pInfo, "GalaxyName", i);
+            MR::getCsvDataS32(&raceData.mScenarioNo, pInfo, "ScenarioNo", i);
+            MR::getCsvDataBool(&raceData.mIsDemoWithStarPointer, pInfo, "IsDemoWithStarPointer", i);
+
+            if (raceData.mName[0] == '\0') {
+                OSPanic(__FILE__, __LINE__, "Invalid race entry at index %d\n", i);
+            }
+        }
+    }
+
+    JMapInfoIter SystemDataHolder::getGalaxyInfo(const char* pName) const {
         return mGalaxyInfoTable.findElement("Name", pName, 0);
     }
 
-    u8 SystemDataHolder::getStoryEventProgress(const char* pName) {
+    u8 SystemDataHolder::getStoryEventProgress(const char* pName) const {
         JMapInfoIter iter = mStoryEventTable.findElement("Name", pName, 0);
 
         u32 progress = 0;
@@ -182,7 +207,7 @@ namespace krp {
         return progress;
     }
 
-    krp::ByamlIter SystemDataHolder::getStageParams(const char* pName, s32 scenarioNo) {
+    krp::ByamlIter SystemDataHolder::getStageParams(const char* pName, s32 scenarioNo) const {
         krp::ByamlIter rootIter = mStageParamTable[pName];
 
         if (scenarioNo > 0) {
@@ -198,7 +223,23 @@ namespace krp {
         return rootIter["Common"];
     }
 
-    krp::ByamlIter SystemDataHolder::getDomeParams(s32 scenarioNo) {
+    krp::ByamlIter SystemDataHolder::getDomeParams(s32 scenarioNo) const {
         return mDomeParamTable[scenarioNo - 1];
+    }
+
+    const RaceData& SystemDataHolder::getRaceData(s32 id) const {
+        return mRaceDataTable[id];
+    }
+
+    s32 SystemDataHolder::getRaceId(const char* pGalaxyName, s32 scenarioNo) const {
+        for (s32 i = 0; i < mRaceDataTable.size(); i++) {
+            const RaceData& raceData = mRaceDataTable[i];
+
+            if (MR::isEqualString(raceData.mGalaxyName, pGalaxyName) && raceData.mScenarioNo == scenarioNo) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }; // namespace krp

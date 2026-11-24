@@ -1,14 +1,14 @@
 #include "Karipon/MapObj/SpikeStick.hpp"
-#include "Game/LiveActor/Nerve.hpp"
-#include "Game/Util/ActorMovementUtil.hpp"
-#include "Game/Util/ActorSensorUtil.hpp"
-#include "Game/Util/JMapUtil.hpp"
-#include "Game/Util/LiveActorUtil.hpp"
-#include "Game/Util/MathUtil.hpp"
-#include "Game/Util/MtxUtil.hpp"
-#include "Game/Util/ObjUtil.hpp"
-#include "Game/Util/SoundUtil.hpp"
-#include "JSystem/JGeometry/TVec.hpp"
+#include <Game/LiveActor/Nerve.hpp>
+#include <Game/Util/ActorMovementUtil.hpp>
+#include <Game/Util/ActorSensorUtil.hpp>
+#include <Game/Util/JMapUtil.hpp>
+#include <Game/Util/LiveActorUtil.hpp>
+#include <Game/Util/MathUtil.hpp>
+#include <Game/Util/MtxUtil.hpp>
+#include <Game/Util/ObjUtil.hpp>
+#include <Game/Util/SoundUtil.hpp>
+#include <JSystem/JGeometry/TVec.hpp>
 
 /*
 
@@ -36,8 +36,8 @@ namespace {
 
 namespace krp {
     SpikeStick::SpikeStick(const char* pName)
-        : LiveActor(pName), mUp(0.0f), mFront(0.0f), mHomePosition(0.0f), mStopPosition(0.0f), mMoveCoord(), mStepDelay(), mStepWait(90), mStepMove(60),
-          mStepMoveWait(60), mStepMoveBack(210) {}
+        : LiveActor(pName), mUp(0.0f), mFront(0.0f), mHomePosition(0.0f), mStopPosition(0.0f), mMoveCoord(), mStepDelay(), mStepWait(90),
+          mStepMove(60), mStepMoveWait(60), mStepMoveBack(210) {}
 
     void SpikeStick::init(const JMapInfoIter& rIter) {
         MR::initDefaultPos(this, rIter);

@@ -3,6 +3,10 @@
 #include "Game/Util/MemoryUtil.hpp"
 #include <JSystem/JKernel/JKRHeap.hpp>
 
+#ifdef TARGET_KRP
+#include <Karipon/Util/MemoryUtil.hpp>
+#endif
+
 namespace {
     OSMutex sDecompMutex;
 
@@ -71,6 +75,12 @@ void* FileRipper::loadToMainRAM(const char* fpath, u8* dest, bool decompress, JK
         compression = checkCompressed(copySrc);
         decompressedSize = (copySrc[4] << 24) | (copySrc[5] << 16) | (copySrc[6] << 8) | copySrc[7];
     }
+
+#ifdef TARGET_KRP
+    if (dest == nullptr) {
+        krp::reportHeapForArchive(fpath, pHeap);
+    }
+#endif
 
     if (decompress && compression) {
         if (!dest) {
